@@ -1,5 +1,6 @@
 package com.flameking.lottery.rpc;
 
+
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
