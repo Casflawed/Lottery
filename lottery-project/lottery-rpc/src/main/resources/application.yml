@@ -1,2 +1,14 @@
 server:
   port: 8080
+
+spring:
+  #  profiles:
+  #    active: test
+  application:
+    name: parking-member
+  datasource:
+    # type: com.alibaba.druid.pool.DruidDataSource
+    username: root
+    password:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/Lottery?characterEncoding=utf8&allowMultiQueries=true&useSSL=false&serverTimezone=Asia/Shanghai
