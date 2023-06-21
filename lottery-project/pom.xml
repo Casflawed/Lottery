@@ -7,6 +7,18 @@
     <artifactId>lottery-project</artifactId>
     <version>1.0-SNAPSHOT</version>
 
+    <packaging>pom</packaging>
+
+    <modules>
+        <module>lottery-application</module>
+        <module>lottery-domain</module>
+        <module>lottery-infrastructure</module>
+        <module>lottery-interfaces</module>
+        <module>lottery-rpc</module>
+        <module>lottery-common</module>
+    </modules>
+
+
     <properties>
         <!-- Base -->
         <jdk.version>1.8</jdk.version>
@@ -18,6 +30,7 @@
         <spring-cloud-alibaba.version>2.2.6.RELEASE</spring-cloud-alibaba.version>
         <swagger.starter.version>1.9.0.RELEASE</swagger.starter.version>
         <mysql.connect.version>8.0.18</mysql.connect.version>
+        <dubbo.version>2.7.1</dubbo.version>
     </properties>
 
     <parent>
@@ -26,8 +39,6 @@
         <version>2.3.1.RELEASE</version>
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
-
-    <packaging>pom</packaging>
 
 
     <dependencyManagement>
@@ -38,6 +49,18 @@
 <!--                <artifactId>swagger-spring-boot-starter</artifactId>-->
 <!--                <version>${swagger.starter.version}</version>-->
 <!--            </dependency>-->
+
+            <dependency>
+                <groupId>org.apache.dubbo</groupId>
+                <artifactId>dubbo</artifactId>
+                <version>${dubbo.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.apache.dubbo</groupId>
+                <artifactId>dubbo-spring-boot-starter</artifactId>
+                <version>${dubbo.version}</version>
+            </dependency>
 
             <!-- SpringBoot -->
             <dependency>
@@ -86,13 +109,35 @@
         </dependencies>
     </dependencyManagement>
 
+<!--    <build>-->
+<!--        <plugins>-->
+<!--            <plugin>-->
+<!--                <groupId>org.springframework.boot</groupId>-->
+<!--                <artifactId>spring-boot-maven-plugin</artifactId>-->
+<!--            </plugin>-->
+<!--        </plugins>-->
+<!--    </build>-->
+
     <build>
         <plugins>
             <plugin>
-                <groupId>org.springframework.boot</groupId>
-                <artifactId>spring-boot-maven-plugin</artifactId>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <version>2.20</version>
+                <configuration>
+                    <skipTests>true</skipTests>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <configuration>
+                    <source>8</source>
+                    <target>8</target>
+                </configuration>
             </plugin>
         </plugins>
     </build>
+
 
 </project>
