@@ -3,11 +3,7 @@ package com.flameking.lottery.common;
 import java.io.Serializable;
 
 /**
- * @description: 统一返回对象中，Code码、Info描述
- * @author: 小傅哥，微信：fustack
- * @date: 2021/10/3
- * @github: https://github.com/fuzhengwei
- * @Copyright: 公众号：bugstack虫洞栈 | 博客：https://bugstack.cn - 沉淀、分享、成长，让自己和他人都能有所收获！
+ * 统一返回对象中，Code码、Info描述
  */
 public class Result implements Serializable {
 

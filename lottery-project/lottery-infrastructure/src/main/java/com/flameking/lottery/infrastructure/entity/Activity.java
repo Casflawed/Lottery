@@ -1,4 +1,4 @@
-package com.flameking.lottery.rpc.entity;
+package com.flameking.lottery.infrastructure.entity;
 
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
@@ -6,6 +6,7 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
 
 import java.time.LocalDateTime;
+import java.util.Date;
 
 /**
  * 活动配置实体类
@@ -31,29 +32,29 @@ public class Activity{
 
     /** 开始时间 */
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-    private LocalDateTime beginDateTime;
+    private Date beginDateTime;
 
     /** 结束时间 */
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-    private LocalDateTime endDateTime;
+    private Date endDateTime;
 
     /** 库存 */
-    private Long stockCount;
+    private Integer stockCount;
 
     /** 每人可参与次数 */
-    private Long takeCount;
+    private Integer takeCount;
 
     /** 活动状态：1编辑、2提审、3撤审、4通过、5运行(审核通过后worker扫描状态)、6拒绝、7关闭、8开启 */
-    private Long state;
+    private Integer state;
 
     /** 创建人 */
     private String creator;
 
     /** 创建时间 */
-    private LocalDateTime createTime;
+    private Date createTime;
 
     /** 修改时间 */
-    private LocalDateTime updateTime;
+    private Date updateTime;
 
 
 }

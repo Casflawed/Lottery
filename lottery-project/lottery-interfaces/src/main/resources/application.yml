@@ -1,0 +1,28 @@
+server:
+  port: 8080
+
+spring:
+  #  profiles:
+  #    active: test
+  application:
+    name: parking-member
+  datasource:
+    # type: com.alibaba.druid.pool.DruidDataSource
+    username: root
+    password: ww2711554770
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/Lottery?characterEncoding=utf8&allowMultiQueries=true&useSSL=false&serverTimezone=Asia/Shanghai
+
+# Dubbo 广播方式配置
+dubbo:
+  application:
+    name: Lottery
+    version: 1.0.0
+  registry:
+    address: N/A
+#    address: multicast://224.5.6.7:1234
+  protocol:
+    name: dubbo
+    port: 20880
+  scan:
+    base-packages: com.flameking.lottery.interfaces

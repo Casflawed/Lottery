@@ -1,7 +1,7 @@
-package com.flameking.lottery.rpc.mapper;
+package com.flameking.lottery.infrastructure.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import com.flameking.lottery.rpc.entity.Activity;
+import com.flameking.lottery.infrastructure.entity.Activity;
 
 
 /**
