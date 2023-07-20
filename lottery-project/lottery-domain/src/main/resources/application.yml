@@ -1,11 +1,11 @@
 server:
-  port: 8080
+  port: 8081
 
 spring:
   #  profiles:
   #    active: test
   application:
-    name: lottery-interfaces
+    name: lottery-domain
   datasource:
     # type: com.alibaba.druid.pool.DruidDataSource
     username: root
