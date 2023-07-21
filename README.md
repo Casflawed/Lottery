@@ -67,3 +67,9 @@ dubbo:
 @Reference(interfaceClass = IActivityBooth.class, url = "dubbo://127.0.0.1:20880")
 IActivityBooth activityBooth;
 ```
+
+# 抽奖策略领域模块开发
+
+**基于充血模型的DDD领域驱动设计相比基于贫血模型的MVC三层架构有何优点**
+
+
