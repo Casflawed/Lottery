@@ -1,9 +1,9 @@
 package com.flameking.lottery.infrastructure.service;
 
 import com.flameking.lottery.infrastructure.entity.StrategyDetail;
-import com.flameking.lottery.domain.strategy.vo.request.borrower.StrategyDetailReq;
-import com.flameking.lottery.domain.strategy.vo.response.borrower.StrategyDetailRes;
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.flameking.lottery.infrastructure.vo.request.borrower.StrategyDetailReq;
+import com.flameking.lottery.infrastructure.vo.response.borrower.StrategyDetailRes;
 
 import java.util.List;
 
