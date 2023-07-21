@@ -1,4 +1,4 @@
-package com.flameking.lottery.domain.strategy.entity;
+package com.flameking.lottery.infrastructure.entity;
 
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
@@ -17,7 +17,6 @@ import java.time.LocalDateTime;
 public class StrategyDetail{
     private static final long serialVersionUID = 1L;
 
-    @TableId(type = IdType.ASSIGN_ID)
     private Long id;
 
     /** 策略ID */

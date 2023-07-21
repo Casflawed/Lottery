@@ -1,12 +1,12 @@
-package com.flameking.lottery.domain.strategy.service.impl;
+package com.flameking.lottery.infrastructure.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.CollectionUtils;
 
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.flameking.lottery.domain.strategy.entity.StrategyDetail;
-import com.flameking.lottery.domain.strategy.mapper.StrategyDetailMapper;
-import com.flameking.lottery.domain.strategy.service.IStrategyDetailService;
+import com.flameking.lottery.infrastructure.entity.StrategyDetail;
+import com.flameking.lottery.infrastructure.mapper.StrategyDetailMapper;
+import com.flameking.lottery.infrastructure.service.IStrategyDetailService;
 import com.flameking.lottery.domain.strategy.vo.request.borrower.StrategyDetailReq;
 import com.flameking.lottery.domain.strategy.vo.response.borrower.StrategyDetailRes;
 import org.springframework.beans.BeanUtils;

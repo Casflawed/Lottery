@@ -1,4 +1,58 @@
+# ignore these folders
 target/
+.idea/
+.settings/
+.vscode/
+bin/
+out/
+ 
+# ignore these files
+.classpath
+.project
+.settings
+.idea
+ 
+# filter databfile、sln file
+*.mdb
+*.ldb
+*.sln
+ 
+# class file
+*.com
+*.class
+*.dll
+*.exe
+*.o
+*.so
+ 
+# compression file
+*.7z
+*.dmg
+*.gz
+*.iso
+*.jar
+*.rar
+*.tar
+*.zip
+*.via
+*.tmp
+*.err
+*.log
+*.iml
+ 
+# OS generated files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+Icon?
+ehthumbs.db
+Thumbs.db
+.factorypath
+.mvn/
+mvnw.cmd
+mvnw
 pom.xml.tag
 pom.xml.releaseBackup
 pom.xml.versionsBackup
@@ -9,9 +63,6 @@ buildNumber.properties
 .mvn/timing.properties
 # https://github.com/takari/maven-wrapper#usage-without-binary-jar
 .mvn/wrapper/maven-wrapper.jar
-
-# Eclipse m2e generated files
-# Eclipse Core
-.project
-# JDT-specific (Eclipse Java Development Tools)
-.classpath
+ 
+# Files or folders need to be retained
+# ...

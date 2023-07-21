@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.flameking.lottery.infrastructure.mapper.StrategyMapper">
+
+    <resultMap type="com.flameking.lottery.infrastructure.entity.Strategy" id="StrategyMap">
+            <result property="id" column="id"    />
+            <result property="strategyId" column="strategyId"    />
+            <result property="strategyDesc" column="strategyDesc"    />
+            <result property="strategyMode" column="strategyMode"    />
+            <result property="grantType" column="grantType"    />
+            <result property="grantDate" column="grantDate"    />
+            <result property="extInfo" column="extInfo"    />
+            <result property="createTime" column="createTime"    />
+            <result property="updateTime" column="updateTime"    />
+    </resultMap>
+
+    <sql id="sql">
+ id, strategyId, strategyDesc, strategyMode, grantType, grantDate, extInfo, createTime, updateTime    </sql>
+
+
+</mapper>

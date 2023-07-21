@@ -1,7 +1,7 @@
-package com.flameking.lottery.domain.strategy.mapper;
+package com.flameking.lottery.infrastructure.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import com.flameking.lottery.domain.strategy.entity.StrategyDetail;
+import com.flameking.lottery.infrastructure.entity.StrategyDetail;
 import org.springframework.stereotype.Repository;
 
 

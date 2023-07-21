@@ -1,4 +1,4 @@
-package com.flameking.lottery.domain.strategy.vo.response.borrower;
+package com.flameking.lottery.infrastructure.vo.request.borrower;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -12,7 +12,7 @@ import java.time.LocalDateTime;
  */
 @Data
 @EqualsAndHashCode(callSuper = false)
-public class StrategyDetailRes{
+public class StrategyDetailReq{
     private Long id;
 
     private Long strategyId;
