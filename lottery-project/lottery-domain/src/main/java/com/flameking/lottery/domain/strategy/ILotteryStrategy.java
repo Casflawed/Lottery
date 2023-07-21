@@ -7,6 +7,8 @@ package com.flameking.lottery.domain.strategy;
  * @dateTime 2023/7/19 21:59
  */
 public interface ILotteryStrategy {
-
-  Long process(Long strategyId, int lotteryCode);
+  /**
+   * 抽奖
+   */
+  Long draw();
 }
