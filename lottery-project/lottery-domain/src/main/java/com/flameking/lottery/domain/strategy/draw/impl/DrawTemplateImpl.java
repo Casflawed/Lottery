@@ -1,5 +1,6 @@
 package com.flameking.lottery.domain.strategy.draw.impl;
 
+import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
 import com.flameking.lottery.domain.strategy.algorithm.ILotteryStrategy;
 import com.flameking.lottery.domain.strategy.factory.LotteryStrategyFactory;
 import com.flameking.lottery.infrastructure.entity.Award;
@@ -9,12 +10,14 @@ import com.flameking.lottery.infrastructure.service.IAwardService;
 import com.flameking.lottery.domain.strategy.draw.IDrawTemplate;
 import com.flameking.lottery.infrastructure.service.IStrategyDetailService;
 import com.flameking.lottery.infrastructure.service.IStrategyService;
+import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
 import java.util.List;
 
-public class IDrawTemplateImpl implements IDrawTemplate {
-    private ILotteryStrategy lotteryStrategy;
+
+@Component
+public class DrawTemplateImpl implements IDrawTemplate {
     @Resource
     private IStrategyDetailService strategyDetailService;
     @Resource
@@ -28,12 +31,14 @@ public class IDrawTemplateImpl implements IDrawTemplate {
      * @param strategy
      * @param awardInfos
      */
-    private void checkAndInitStrategy(Strategy strategy, List<StrategyDetail> awardInfos){
+    private ILotteryStrategy checkAndInitStrategy(Strategy strategy, List<StrategyDetail> awardInfos){
         Integer strategyMode = strategy.getStrategyMode();
-        if (strategyMode != 1){
-            return;
-        }
+        ILotteryStrategy lotteryStrategy = LotteryStrategyFactory.getLotteryStrategy(strategy.getStrategyMode());
         lotteryStrategy.checkAndInitStrategy(strategy.getStrategyId(), awardInfos);
+        if (strategyMode == 1){
+            lotteryStrategy.init(strategy.getStrategyId());
+        }
+        return lotteryStrategy;
     }
 
     @Override
@@ -44,16 +49,24 @@ public class IDrawTemplateImpl implements IDrawTemplate {
         //根据 strategyId 查询策略信息
         Strategy strategy = strategyService.getByStrategyId(strategyId);
 
-        //根据 strategyMode 查询策略配置
-        lotteryStrategy = LotteryStrategyFactory.getLotteryStrategy(strategy.getStrategyMode());
+        //初始化抽奖策略
+        ILotteryStrategy lotteryStrategy = checkAndInitStrategy(strategy, awardInfos);
 
-        //检查单项概率抽奖策略是否初始化，非单项概率抽奖策略直接跳过
-        checkAndInitStrategy(strategy, awardInfos);
+        //排除掉的奖品id
+        List<Long> excludeAwardIds = strategyDetailService.getExcludedAwardIds(strategyId);
 
         //执行抽奖
-        Long awardId = lotteryStrategy.draw(strategyId);
+        String awardId = lotteryStrategy.draw(strategyId, excludeAwardIds);
+
+        //未中奖
+        if (awardId == null){
+            return null;
+        }
+
+        //抽奖成功，扣减库存
+        boolean isSuccess = strategyDetailService.decreaseLeftAwardCount(strategyId, awardId);
 
         //包装奖品信息
-        return awardService.getAwardByAwardId(awardId);
+        return isSuccess ? awardService.getAwardByAwardId(Long.valueOf(awardId)) : null;
     }
 }

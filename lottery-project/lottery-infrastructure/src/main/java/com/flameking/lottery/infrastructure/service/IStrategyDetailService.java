@@ -1,5 +1,6 @@
 package com.flameking.lottery.infrastructure.service;
 
+import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
 import com.flameking.lottery.infrastructure.entity.StrategyDetail;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.flameking.lottery.infrastructure.vo.request.borrower.StrategyDetailReq;
@@ -25,6 +26,22 @@ public interface IStrategyDetailService extends IService<StrategyDetail> {
   boolean del(String id);
 
   List<StrategyDetail> getStrategyDetailsByStrategyId(Long strategyId);
+
+  /**
+   * 获取排除掉的奖品id
+   *
+   * @param strategyId 策略id
+   * @return
+   */
+  List<Long> getExcludedAwardIds(Long strategyId);
+
+  /**
+   * 扣减剩余奖品数量
+   *
+   * @param strategyId 策略id
+   * @param awardId    奖品id
+   */
+  boolean decreaseLeftAwardCount(Long strategyId, String awardId);
 
 }
 

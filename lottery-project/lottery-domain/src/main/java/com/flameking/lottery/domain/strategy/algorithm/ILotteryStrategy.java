@@ -14,15 +14,23 @@ public interface ILotteryStrategy {
     /**
      * 抽奖
      *
-     * @param strategyId
+     * @param strategyId       策略id
+     * @param excludedAwardIds 排除掉的奖品id
      */
-    Long draw(Long strategyId);
+    String draw(Long strategyId, List<Long> excludedAwardIds);
 
     /**
      * 检查抽奖策略是否初始化
      *
-     * @param strategyId 策略id
-     * @param awardInfos 奖品信息
+     * @param strategyId      策略id
+     * @param strategyDetails 策略详情信息
      */
-    void checkAndInitStrategy(Long strategyId, List<StrategyDetail> awardInfos);
+    void checkAndInitStrategy(Long strategyId, List<StrategyDetail> strategyDetails);
+
+    /**
+     * 初始化单项概率抽奖策略
+     *
+     * @param strategyId 策略id
+     */
+    void init(Long strategyId);
 }

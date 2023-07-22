@@ -7,13 +7,14 @@
             <result property="strategyId" column="strategyId"    />
             <result property="awardId" column="awardId"    />
             <result property="awardCount" column="awardCount"    />
+            <result property="awardLeftCount" column="awardLeftCount"    />
             <result property="awardRate" column="awardRate"    />
             <result property="createTime" column="createTime"    />
             <result property="updateTime" column="updateTime"    />
     </resultMap>
 
     <sql id="sql">
- id, strategyId, awardId, awardCount, awardRate, createTime, updateTime    </sql>
+ id, strategyId, awardId, awardCount, award_left_count, awardRate, createTime, updateTime    </sql>
 
 
 </mapper>

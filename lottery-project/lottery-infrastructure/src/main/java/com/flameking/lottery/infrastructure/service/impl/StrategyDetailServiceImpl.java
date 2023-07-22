@@ -1,6 +1,7 @@
 package com.flameking.lottery.infrastructure.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
 import com.baomidou.mybatisplus.core.toolkit.CollectionUtils;
 
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
@@ -16,6 +17,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 
 /**
@@ -91,6 +93,29 @@ public class StrategyDetailServiceImpl extends ServiceImpl<StrategyDetailMapper,
             .eq(StrategyDetail::getStrategyId, strategyId));
 
     return strategyDetails;
+  }
+
+  @Override
+  public List<Long> getExcludedAwardIds(Long strategyId) {
+    List<StrategyDetail> strategyDetails = list(new LambdaQueryWrapper<StrategyDetail>()
+            .eq(StrategyDetail::getStrategyId, strategyId)
+            .eq(StrategyDetail::getAwardLeftCount, 0));
+    if (CollectionUtils.isNotEmpty(strategyDetails)){
+      return strategyDetails.stream().map(StrategyDetail::getAwardId).collect(Collectors.toList());
+    }else {
+      return new ArrayList<Long>();
+    }
+  }
+
+  public boolean decreaseLeftAwardCount(Long strategyId, String awardId) {
+    LambdaUpdateWrapper<StrategyDetail> updateWrapper = new LambdaUpdateWrapper<>();
+    //数据库行锁，解决并发问题
+    updateWrapper.setSql("award_left_count = award_left_count - 1")
+            .eq(StrategyDetail::getStrategyId, strategyId)
+            .eq(StrategyDetail::getAwardId, Long.valueOf(awardId))
+            //大于0的条件避免抽奖失败率高的情况
+            .gt(StrategyDetail::getAwardLeftCount, 0);
+    return update(updateWrapper);
   }
 
 }

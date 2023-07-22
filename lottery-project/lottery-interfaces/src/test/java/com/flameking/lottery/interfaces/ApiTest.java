@@ -1,6 +1,8 @@
 package com.flameking.lottery.interfaces;
 
 import com.alibaba.fastjson.JSON;
+import com.flameking.lottery.domain.strategy.draw.IDrawTemplate;
+import com.flameking.lottery.infrastructure.entity.Award;
 import com.flameking.lottery.rpc.IActivityBooth;
 import com.flameking.lottery.rpc.dto.ActivityDto;
 import com.flameking.lottery.rpc.req.ActivityReq;
@@ -8,10 +10,10 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.dubbo.config.annotation.Reference;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import javax.annotation.Resource;
 import java.util.Date;
 
 /**
@@ -26,7 +28,8 @@ public class ApiTest {
 
   @Reference(interfaceClass = IActivityBooth.class)
   IActivityBooth activityBooth;
-
+  @Autowired
+  private IDrawTemplate drawTemplate;
 
   @Test
   public void test_insert() {
@@ -48,6 +51,21 @@ public class ApiTest {
     req.setActivityId(100001L);
 
     log.info("测试结果：{}", JSON.toJSONString(activityBooth.queryActivityById(req).getActivity()));
+  }
+
+
+  @Test
+  public void test_draw() {
+    Long strategyId = 1001L;
+    for (int i = 0; i < 100; ++i){
+      Award award = drawTemplate.doDraw(1001L, strategyId);
+      if (award != null){
+        System.out.println(award.getAwardName());
+      }else {
+        System.out.println("未中奖");
+      }
+    }
+
   }
 
 }

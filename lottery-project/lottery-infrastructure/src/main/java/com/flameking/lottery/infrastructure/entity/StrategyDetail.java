@@ -26,7 +26,10 @@ public class StrategyDetail{
     private Long awardId;
 
     /** 奖品数量 */
-    private Long awardCount;
+    private Integer awardCount;
+
+    /** 奖品剩余数量 */
+    private Integer awardLeftCount;
 
     /** 中奖概率 */
     private Double awardRate;

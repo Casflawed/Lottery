@@ -1,6 +1,7 @@
 package com.flameking.lottery.domain.strategy.factory;
 
 import com.flameking.lottery.domain.strategy.algorithm.ILotteryStrategy;
+import com.flameking.lottery.domain.strategy.algorithm.impl.EntiretyRateRandomDrawAlgorithm;
 import com.flameking.lottery.domain.strategy.algorithm.impl.SingleProbabilityLotteryStrategy;
 
 import java.util.HashMap;
@@ -14,6 +15,7 @@ public class LotteryStrategyFactory {
 
     static {
         lotteryStrategyPool.put(1, new SingleProbabilityLotteryStrategy());
+        lotteryStrategyPool.put(2, new EntiretyRateRandomDrawAlgorithm());
     }
     public static ILotteryStrategy getLotteryStrategy(int strategyMode){
         return lotteryStrategyPool.get(strategyMode);
