@@ -96,7 +96,7 @@ public class StrategyDetailServiceImpl extends ServiceImpl<StrategyDetailMapper,
   }
 
   @Override
-  public List<Long> getExcludedAwardIds(Long strategyId) {
+  public List<Long> queryAwardIdsWithoutAmount(Long strategyId) {
     List<StrategyDetail> strategyDetails = list(new LambdaQueryWrapper<StrategyDetail>()
             .eq(StrategyDetail::getStrategyId, strategyId)
             .eq(StrategyDetail::getAwardLeftCount, 0));
@@ -107,12 +107,13 @@ public class StrategyDetailServiceImpl extends ServiceImpl<StrategyDetailMapper,
     }
   }
 
-  public boolean decreaseLeftAwardCount(Long strategyId, String awardId) {
+  @Override
+  public boolean decreaseLeftAwardCount(Long strategyId, Long awardId) {
     LambdaUpdateWrapper<StrategyDetail> updateWrapper = new LambdaUpdateWrapper<>();
     //数据库行锁，解决并发问题
     updateWrapper.setSql("award_left_count = award_left_count - 1")
             .eq(StrategyDetail::getStrategyId, strategyId)
-            .eq(StrategyDetail::getAwardId, Long.valueOf(awardId))
+            .eq(StrategyDetail::getAwardId, awardId)
             //大于0的条件避免抽奖失败率高的情况
             .gt(StrategyDetail::getAwardLeftCount, 0);
     return update(updateWrapper);

@@ -28,12 +28,12 @@ public interface IStrategyDetailService extends IService<StrategyDetail> {
   List<StrategyDetail> getStrategyDetailsByStrategyId(Long strategyId);
 
   /**
-   * 获取排除掉的奖品id
+   * 查询剩余数量为0的奖品id
    *
    * @param strategyId 策略id
    * @return
    */
-  List<Long> getExcludedAwardIds(Long strategyId);
+  List<Long> queryAwardIdsWithoutAmount(Long strategyId);
 
   /**
    * 扣减剩余奖品数量
@@ -41,7 +41,7 @@ public interface IStrategyDetailService extends IService<StrategyDetail> {
    * @param strategyId 策略id
    * @param awardId    奖品id
    */
-  boolean decreaseLeftAwardCount(Long strategyId, String awardId);
+  boolean decreaseLeftAwardCount(Long strategyId, Long awardId);
 
 }
 

@@ -1,7 +1,6 @@
 package com.flameking.lottery.domain.strategy.algorithm.impl;
 
 import com.flameking.lottery.domain.strategy.algorithm.BaseLotteryStrategy;
-import com.flameking.lottery.domain.strategy.algorithm.ILotteryStrategy;
 import com.flameking.lottery.domain.strategy.model.AwardRateInfo;
 
 import java.util.ArrayList;
@@ -11,10 +10,10 @@ import java.util.Random;
 /**
  * 必中奖抽奖策略
  */
-public class EntiretyRateRandomDrawAlgorithm extends BaseLotteryStrategy implements ILotteryStrategy {
+public class EntiretyRateRandomDrawAlgorithm extends BaseLotteryStrategy {
     @Override
-    public String draw(Long strategyId, List<Long> excludedAwardIds) {
-        List<AwardRateInfo> rateInfos = awardInfos.get(strategyId);
+    public Long draw(Long strategyId, List<Long> excludedAwardIds) {
+        List<AwardRateInfo> rateInfos = commonAwardRateInfos.get(strategyId);
         List<AwardRateInfo> tmpRateInfos = new ArrayList<>();
 
         //动态计算全概率
@@ -35,7 +34,7 @@ public class EntiretyRateRandomDrawAlgorithm extends BaseLotteryStrategy impleme
         }
         //有效奖品数量 == 1
         if (tmpRateInfos.size() == 1){
-            return String.valueOf(tmpRateInfos.get(0).getAwardId());
+            return tmpRateInfos.get(0).getAwardId();
         }
 
         //获取随机概率值
@@ -54,6 +53,6 @@ public class EntiretyRateRandomDrawAlgorithm extends BaseLotteryStrategy impleme
         }
 
         // 返回中奖结果
-        return String.valueOf(awardId);
+        return awardId;
     }
 }
