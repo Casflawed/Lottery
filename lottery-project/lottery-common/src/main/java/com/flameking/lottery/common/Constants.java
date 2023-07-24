@@ -1,5 +1,8 @@
 package com.flameking.lottery.common;
 
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+
 /**
  * 枚举信息定义
  */
@@ -36,189 +39,10 @@ public class Constants {
     }
 
     /**
-     * 全局属性
-     */
-    public static final class Global {
-        /**
-         * 空节点值
-         */
-        public static final Long TREE_NULL_NODE = 0L;
-    }
-
-    /**
-     * 缓存 Key
-     */
-    public static final class RedisKey {
-
-        // 抽奖活动库存 Key
-        private static final String LOTTERY_ACTIVITY_STOCK_COUNT = "lottery_activity_stock_count_";
-
-        public static String KEY_LOTTERY_ACTIVITY_STOCK_COUNT(Long activityId) {
-            return LOTTERY_ACTIVITY_STOCK_COUNT + activityId;
-        }
-
-        // 抽奖活动库存锁 Key
-        private static final String LOTTERY_ACTIVITY_STOCK_COUNT_TOKEN = "lottery_activity_stock_count_token_";
-
-        public static String KEY_LOTTERY_ACTIVITY_STOCK_COUNT_TOKEN(Long activityId, Integer stockUsedCount) {
-            return LOTTERY_ACTIVITY_STOCK_COUNT_TOKEN + activityId + "_" + stockUsedCount;
-        }
-
-    }
-
-    /**
-     * 决策树节点
-     */
-    public static final class NodeType {
-        /**
-         * 树茎
-         */
-        public static final Integer STEM = 1;
-        /**
-         * 果实
-         */
-        public static final Integer FRUIT = 2;
-    }
-
-    /**
-     * 规则限定类型
-     */
-    public static final class RuleLimitType {
-        /**
-         * 等于
-         */
-        public static final int EQUAL = 1;
-        /**
-         * 大于
-         */
-        public static final int GT = 2;
-        /**
-         * 小于
-         */
-        public static final int LT = 3;
-        /**
-         * 大于&等于
-         */
-        public static final int GE = 4;
-        /**
-         * 小于&等于
-         */
-        public static final int LE = 5;
-        /**
-         * 枚举
-         */
-        public static final int ENUM = 6;
-    }
-
-    /**
-     * 活动状态：1编辑、2提审、3撤审、4通过、5运行(审核通过后worker扫描状态)、6拒绝、7关闭、8开启
-     */
-    public enum ActivityState {
-
-        /**
-         * 1：编辑
-         */
-        EDIT(1, "编辑"),
-        /**
-         * 2：提审
-         */
-        ARRAIGNMENT(2, "提审"),
-        /**
-         * 3：撤审
-         */
-        REVOKE(3, "撤审"),
-        /**
-         * 4：通过
-         */
-        PASS(4, "通过"),
-        /**
-         * 5：运行(活动中)
-         */
-        DOING(5, "运行(活动中)"),
-        /**
-         * 6：拒绝
-         */
-        REFUSE(6, "拒绝"),
-        /**
-         * 7：关闭
-         */
-        CLOSE(7, "关闭"),
-        /**
-         * 8：开启
-         */
-        OPEN(8, "开启");
-
-        private Integer code;
-        private String info;
-
-        ActivityState(Integer code, String info) {
-            this.code = code;
-            this.info = info;
-        }
-
-        public Integer getCode() {
-            return code;
-        }
-
-        public void setCode(Integer code) {
-            this.code = code;
-        }
-
-        public String getInfo() {
-            return info;
-        }
-
-        public void setInfo(String info) {
-            this.info = info;
-        }
-    }
-
-    /**
-     * 抽奖策略模式：总体概率、单项概率
-     * 场景：两种抽奖算法描述，场景A20%、B30%、C50%
-     * 单项概率：如果A奖品抽空后，B和C保持目前中奖概率，用户抽奖扔有20%中为A，因A库存抽空则结果展示为未中奖。为了运营成本，通常这种情况的使用的比较多
-     * 总体概率：如果A奖品抽空后，B和C奖品的概率按照 3:5 均分，相当于B奖品中奖概率由 0.3 升为 0.375
-     */
-    public enum StrategyMode {
-
-        /**
-         * 单项概率：如果A奖品抽空后，B和C保持目前中奖概率，用户抽奖扔有20%中为A，因A库存抽空则结果展示为未中奖。为了运营成本，通常这种情况的使用的比较多
-         */
-        SINGLE(1, "单项概率"),
-
-        /**
-         * 总体概率：如果A奖品抽空后，B和C奖品的概率按照 3:5 均分，相当于B奖品中奖概率由 0.3 升为 0.375
-         */
-        ENTIRETY(2, "总体概率");
-
-        private Integer code;
-        private String info;
-
-        StrategyMode(Integer code, String info) {
-            this.code = code;
-            this.info = info;
-        }
-
-        public Integer getCode() {
-            return code;
-        }
-
-        public void setCode(Integer code) {
-            this.code = code;
-        }
-
-        public String getInfo() {
-            return info;
-        }
-
-        public void setInfo(String info) {
-            this.info = info;
-        }
-    }
-
-    /**
      * 中奖状态：0未中奖、1已中奖、2兜底奖
      */
+    @Getter
+    @AllArgsConstructor
     public enum DrawState {
         /**
          * 未中奖
@@ -235,29 +59,8 @@ public class Constants {
          */
         Cover(2, "兜底奖");
 
-        private Integer code;
-        private String info;
-
-        DrawState(Integer code, String info) {
-            this.code = code;
-            this.info = info;
-        }
-
-        public Integer getCode() {
-            return code;
-        }
-
-        public void setCode(Integer code) {
-            this.code = code;
-        }
-
-        public String getInfo() {
-            return info;
-        }
-
-        public void setInfo(String info) {
-            this.info = info;
-        }
+        private final Integer code;
+        private final String info;
     }
 
     /**

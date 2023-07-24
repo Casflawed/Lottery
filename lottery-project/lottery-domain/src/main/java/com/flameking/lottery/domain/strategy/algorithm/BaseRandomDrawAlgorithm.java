@@ -9,7 +9,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public abstract class BaseLotteryStrategy implements ILotteryStrategy {
+public abstract class BaseRandomDrawAlgorithm implements IRandomDrawAlgorithm {
     protected final static int TOTAL_RATE = 100;
     protected final static int ARRAY_SIZE = 128;
     private final static int HASH_INCREMENT = 0x61c88647;

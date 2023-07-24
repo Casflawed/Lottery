@@ -1,6 +1,6 @@
 package com.flameking.lottery.domain.strategy.algorithm.impl;
 
-import com.flameking.lottery.domain.strategy.algorithm.BaseLotteryStrategy;
+import com.flameking.lottery.domain.strategy.algorithm.BaseRandomDrawAlgorithm;
 import com.flameking.lottery.domain.strategy.model.AwardRateInfo;
 import lombok.extern.slf4j.Slf4j;
 
@@ -16,7 +16,7 @@ import java.util.Random;
  * @dateTime 2023/7/19 21:58
  */
 @Slf4j
-public class SingleProbabilityLotteryStrategy extends BaseLotteryStrategy {
+public class SingleRateRandomDrawAlgorithm extends BaseRandomDrawAlgorithm {
     //奖品池
     private final Map<Long, Long[]> singleAwardRatePool = new HashMap<>();
 

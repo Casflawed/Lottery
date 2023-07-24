@@ -26,3 +26,7 @@ dubbo:
     port: 20881
   scan:
     base-packages: com.flameking.lottery.interfaces
+
+#logging:
+#  level:
+#    com.flameking.lottery: debug #基础日志级别

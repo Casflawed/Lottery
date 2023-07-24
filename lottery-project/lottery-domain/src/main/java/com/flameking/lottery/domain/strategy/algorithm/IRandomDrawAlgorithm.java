@@ -10,7 +10,7 @@ import java.util.List;
  * @author WangWei
  * @dateTime 2023/7/19 21:59
  */
-public interface ILotteryStrategy {
+public interface IRandomDrawAlgorithm {
     /**
      * 抽奖
      *

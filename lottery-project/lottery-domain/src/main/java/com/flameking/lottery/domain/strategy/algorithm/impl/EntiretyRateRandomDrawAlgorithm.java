@@ -1,6 +1,6 @@
 package com.flameking.lottery.domain.strategy.algorithm.impl;
 
-import com.flameking.lottery.domain.strategy.algorithm.BaseLotteryStrategy;
+import com.flameking.lottery.domain.strategy.algorithm.BaseRandomDrawAlgorithm;
 import com.flameking.lottery.domain.strategy.model.AwardRateInfo;
 
 import java.util.ArrayList;
@@ -10,7 +10,7 @@ import java.util.Random;
 /**
  * 必中奖抽奖策略
  */
-public class EntiretyRateRandomDrawAlgorithm extends BaseLotteryStrategy {
+public class EntiretyRateRandomDrawAlgorithm extends BaseRandomDrawAlgorithm {
     @Override
     public Long draw(Long strategyId, List<Long> excludedAwardIds) {
         List<AwardRateInfo> rateInfos = commonAwardRateInfos.get(strategyId);

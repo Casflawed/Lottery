@@ -1,6 +1,5 @@
 package com.flameking.lottery.domain.strategy.draw;
 
-import com.flameking.lottery.domain.strategy.factory.LotteryStrategyFactory;
 import com.flameking.lottery.domain.strategy.model.StrategyRich;
 import com.flameking.lottery.domain.strategy.repository.IStrategyRepository;
 import com.flameking.lottery.infrastructure.entity.Award;

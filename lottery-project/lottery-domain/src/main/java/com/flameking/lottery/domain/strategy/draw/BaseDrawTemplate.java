@@ -1,18 +1,24 @@
 package com.flameking.lottery.domain.strategy.draw;
 
-import com.flameking.lottery.domain.strategy.algorithm.ILotteryStrategy;
+import com.flameking.lottery.common.Constants;
+import com.flameking.lottery.domain.strategy.algorithm.IRandomDrawAlgorithm;
 import com.flameking.lottery.domain.strategy.factory.LotteryStrategyFactory;
 import com.flameking.lottery.domain.strategy.model.StrategyRich;
+import com.flameking.lottery.domain.strategy.model.res.DrawResult;
+import com.flameking.lottery.domain.strategy.model.vo.DrawAwardInfo;
 import com.flameking.lottery.infrastructure.entity.Award;
 import com.flameking.lottery.infrastructure.entity.Strategy;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.BeanUtils;
 
 import java.util.List;
 
+@Slf4j
 public abstract class BaseDrawTemplate extends DrawStrategySupport implements IDrawTemplate{
 
 
     @Override
-    public Award doDraw(Long uId, Long strategyId) {
+    public DrawResult doDraw(Long uId, Long strategyId) {
         //查询奖品概率和策略配置信息
         StrategyRich strategyRich = this.queryStrategyRich(strategyId);
         Strategy strategy = strategyRich.getStrategy();
@@ -24,10 +30,10 @@ public abstract class BaseDrawTemplate extends DrawStrategySupport implements ID
         List<Long> excludeAwardIds = this.queryExcludeAwardIds(strategyId);
 
         //执行抽奖
-        Long awardId = this.excDrawStrategy(strategyId, strategy.getStrategyMode(), excludeAwardIds);
+        Long awardId = this.excRandomDrawAlgorithm(strategyId, strategy.getStrategyMode(), excludeAwardIds);
 
         //包装奖品信息
-        return awardId == null ? null : this.queryAward(awardId);
+        return this.wrappedLotteryResult(uId, strategyId, awardId);
     }
 
     /**
@@ -37,18 +43,32 @@ public abstract class BaseDrawTemplate extends DrawStrategySupport implements ID
      * @param strategyRich
      */
     private void initDrawStrategy(Integer strategyMode, StrategyRich strategyRich) {
-        ILotteryStrategy lotteryStrategy = LotteryStrategyFactory.getLotteryStrategy(strategyMode);
+        IRandomDrawAlgorithm lotteryStrategy = LotteryStrategyFactory.getLotteryStrategy(strategyMode);
         lotteryStrategy.initAwardRateInfo(strategyRich.getStrategyId(), strategyRich.getStrategyDetailList());
     }
 
+
+    private DrawResult wrappedLotteryResult(Long uId, Long strategyId, Long awardId){
+        if (awardId == null){
+            log.debug("用户-{}-抽奖策略-{}-抽奖状态-{}", uId, strategyId, Constants.DrawState.FAIL.getInfo());
+            return new DrawResult(uId, strategyId, Constants.DrawState.FAIL.getCode(), Constants.DrawState.FAIL.getInfo());
+        }
+        log.debug("用户-{}-抽奖策略-{}-抽奖状态-{}", uId, strategyId, Constants.DrawState.FAIL.getInfo());
+        Award award = this.queryAward(awardId);
+        DrawAwardInfo drawAwardInfo = new DrawAwardInfo();
+        BeanUtils.copyProperties(award, drawAwardInfo);
+
+        return new DrawResult(uId, strategyId, Constants.DrawState.SUCCESS.getCode(), Constants.DrawState.SUCCESS.getInfo(), drawAwardInfo);
+    }
+
     /**
-     * 执行抽奖策略
+     * 执行抽奖算法
      *
      * @param strategyId
      * @param strategyMode
      * @param excludeAwardIds
      */
-    protected abstract Long excDrawStrategy(Long strategyId, Integer strategyMode, List<Long> excludeAwardIds);
+    protected abstract Long excRandomDrawAlgorithm(Long strategyId, Integer strategyMode, List<Long> excludeAwardIds);
 
     /**
      * 查询查询不在抽奖范围内的奖品

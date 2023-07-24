@@ -20,10 +20,10 @@ public class Award{
     private Long awardId;
 
     /** 奖品类型（文字描述、兑换码、优惠券、实物奖品暂无） */
-    private Long awardType;
+    private Integer awardType;
 
     /** 奖品数量 */
-    private Long awardCount;
+    private Integer awardCount;
 
     /** 奖品名称 */
     private String awardName;
