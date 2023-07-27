@@ -2,7 +2,7 @@ package com.flameking.lottery.domain.strategy.draw;
 
 import com.flameking.lottery.common.Constants;
 import com.flameking.lottery.domain.strategy.algorithm.IRandomDrawAlgorithm;
-import com.flameking.lottery.domain.strategy.factory.LotteryStrategyFactory;
+import com.flameking.lottery.domain.strategy.factory.RandomDrawAlgorithmFactory;
 import com.flameking.lottery.domain.strategy.model.StrategyRich;
 import com.flameking.lottery.domain.strategy.model.res.DrawResult;
 import com.flameking.lottery.domain.strategy.model.vo.DrawAwardInfo;
@@ -24,7 +24,7 @@ public abstract class BaseDrawTemplate extends DrawStrategySupport implements ID
         Strategy strategy = strategyRich.getStrategy();
 
         //初始化抽奖策略
-        this.initDrawStrategy(strategy.getStrategyMode(), strategyRich);
+        this.initRandomDrawAlgorithm(strategy.getStrategyMode(), strategyRich);
 
         //查询不在抽奖范围内的奖品
         List<Long> excludeAwardIds = this.queryExcludeAwardIds(strategyId);
@@ -37,14 +37,14 @@ public abstract class BaseDrawTemplate extends DrawStrategySupport implements ID
     }
 
     /**
-     * 初始化抽奖策略
+     * 初始化抽奖算法的配置
      *
      * @param strategyMode
      * @param strategyRich
      */
-    private void initDrawStrategy(Integer strategyMode, StrategyRich strategyRich) {
-        IRandomDrawAlgorithm lotteryStrategy = LotteryStrategyFactory.getLotteryStrategy(strategyMode);
-        lotteryStrategy.initAwardRateInfo(strategyRich.getStrategyId(), strategyRich.getStrategyDetailList());
+    private void initRandomDrawAlgorithm(Integer strategyMode, StrategyRich strategyRich) {
+        IRandomDrawAlgorithm randomDrawAlgorithm = RandomDrawAlgorithmFactory.getRandomDrawAlgorithm(strategyMode);
+        randomDrawAlgorithm.initAwardRateInfo(strategyRich.getStrategyId(), strategyRich.getStrategyDetailList());
     }
 
 

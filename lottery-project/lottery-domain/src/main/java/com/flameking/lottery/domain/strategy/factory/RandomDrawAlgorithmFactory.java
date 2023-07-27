@@ -10,14 +10,14 @@ import java.util.Map;
 /**
  * 抽奖策略静态工厂类
  */
-public class LotteryStrategyFactory {
+public class RandomDrawAlgorithmFactory {
     public final static Map<Integer, IRandomDrawAlgorithm> lotteryStrategyPool = new HashMap<>();
 
     static {
         lotteryStrategyPool.put(1, new SingleRateRandomDrawAlgorithm());
         lotteryStrategyPool.put(2, new EntiretyRateRandomDrawAlgorithm());
     }
-    public static IRandomDrawAlgorithm getLotteryStrategy(int strategyMode){
+    public static IRandomDrawAlgorithm getRandomDrawAlgorithm(int strategyMode){
         return lotteryStrategyPool.get(strategyMode);
     }
 }

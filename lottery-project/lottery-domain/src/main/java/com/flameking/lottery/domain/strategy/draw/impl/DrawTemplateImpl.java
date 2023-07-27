@@ -3,7 +3,7 @@ package com.flameking.lottery.domain.strategy.draw.impl;
 import com.flameking.lottery.domain.strategy.algorithm.IRandomDrawAlgorithm;
 import com.flameking.lottery.domain.strategy.algorithm.impl.SingleRateRandomDrawAlgorithm;
 import com.flameking.lottery.domain.strategy.draw.BaseDrawTemplate;
-import com.flameking.lottery.domain.strategy.factory.LotteryStrategyFactory;
+import com.flameking.lottery.domain.strategy.factory.RandomDrawAlgorithmFactory;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -13,7 +13,7 @@ import java.util.List;
 public class DrawTemplateImpl extends BaseDrawTemplate {
     @Override
     protected Long excRandomDrawAlgorithm(Long strategyId, Integer strategyMode, List<Long> excludeAwardIds) {
-        IRandomDrawAlgorithm lotteryStrategy = LotteryStrategyFactory.getLotteryStrategy(strategyMode);
+        IRandomDrawAlgorithm lotteryStrategy = RandomDrawAlgorithmFactory.getRandomDrawAlgorithm(strategyMode);
         Long awardId;
         //单项概率抽奖策略需要初始化奖品概率池
         if (strategyMode == 1){

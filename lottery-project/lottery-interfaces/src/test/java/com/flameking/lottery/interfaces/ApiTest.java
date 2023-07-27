@@ -1,6 +1,8 @@
 package com.flameking.lottery.interfaces;
 
 import com.alibaba.fastjson.JSON;
+import com.flameking.lottery.domain.award.model.res.AwardSenderRes;
+import com.flameking.lottery.domain.award.template.IAwardSenderTemplate;
 import com.flameking.lottery.domain.strategy.draw.IDrawTemplate;
 import com.flameking.lottery.domain.strategy.model.res.DrawResult;
 import com.flameking.lottery.rpc.IActivityBooth;
@@ -30,6 +32,8 @@ public class ApiTest {
     IActivityBooth activityBooth;
     @Autowired
     private IDrawTemplate drawTemplate;
+    @Autowired
+    private IAwardSenderTemplate awardSenderTemplate;
 
     @Test
     public void test_insert() {
@@ -60,6 +64,18 @@ public class ApiTest {
         for (int i = 0; i < 100; ++i) {
             DrawResult drawResult = drawTemplate.doDraw(1001L, strategyId);
             System.out.println(JSON.toJSONString(drawResult));
+        }
+
+    }
+
+    @Test
+    public void test_send() {
+        Long strategyId = 1001L;
+        Long uId = 1001L;
+        String orderId = "0001";
+        for (int i = 0; i < 100; i++){
+            AwardSenderRes awardSenderRes = awardSenderTemplate.sendAward(uId, strategyId, orderId);
+            System.out.println(JSON.toJSONString(awardSenderRes));
         }
 
     }
