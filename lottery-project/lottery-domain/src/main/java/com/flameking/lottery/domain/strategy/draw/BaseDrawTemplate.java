@@ -3,11 +3,11 @@ package com.flameking.lottery.domain.strategy.draw;
 import com.flameking.lottery.common.Constants;
 import com.flameking.lottery.domain.strategy.algorithm.IRandomDrawAlgorithm;
 import com.flameking.lottery.domain.strategy.factory.RandomDrawAlgorithmFactory;
-import com.flameking.lottery.domain.strategy.model.StrategyRich;
+import com.flameking.lottery.domain.strategy.model.vo.StrategyRich;
 import com.flameking.lottery.domain.strategy.model.res.DrawResult;
+import com.flameking.lottery.domain.strategy.model.vo.AwardBriefVO;
 import com.flameking.lottery.domain.strategy.model.vo.DrawAwardInfo;
-import com.flameking.lottery.infrastructure.entity.Award;
-import com.flameking.lottery.infrastructure.entity.Strategy;
+import com.flameking.lottery.domain.strategy.model.vo.StrategyBriefVO;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 
@@ -21,7 +21,7 @@ public abstract class BaseDrawTemplate extends DrawStrategySupport implements ID
     public DrawResult doDraw(Long uId, Long strategyId) {
         //查询奖品概率和策略配置信息
         StrategyRich strategyRich = this.queryStrategyRich(strategyId);
-        Strategy strategy = strategyRich.getStrategy();
+        StrategyBriefVO strategy = strategyRich.getStrategy();
 
         //初始化抽奖策略
         this.initRandomDrawAlgorithm(strategy.getStrategyMode(), strategyRich);
@@ -54,9 +54,10 @@ public abstract class BaseDrawTemplate extends DrawStrategySupport implements ID
             return new DrawResult(uId, strategyId, Constants.DrawState.FAIL.getCode(), Constants.DrawState.FAIL.getInfo());
         }
         log.debug("用户-{}-抽奖策略-{}-抽奖状态-{}", uId, strategyId, Constants.DrawState.FAIL.getInfo());
-        Award award = this.queryAward(awardId);
+
+        AwardBriefVO awardBriefVO = this.queryAward(awardId);
         DrawAwardInfo drawAwardInfo = new DrawAwardInfo();
-        BeanUtils.copyProperties(award, drawAwardInfo);
+        BeanUtils.copyProperties(awardBriefVO, drawAwardInfo);
 
         return new DrawResult(uId, strategyId, Constants.DrawState.SUCCESS.getCode(), Constants.DrawState.SUCCESS.getInfo(), drawAwardInfo);
     }

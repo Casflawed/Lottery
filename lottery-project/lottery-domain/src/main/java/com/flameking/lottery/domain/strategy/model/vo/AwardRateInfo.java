@@ -1,4 +1,4 @@
-package com.flameking.lottery.domain.strategy.model;
+package com.flameking.lottery.domain.strategy.model.vo;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

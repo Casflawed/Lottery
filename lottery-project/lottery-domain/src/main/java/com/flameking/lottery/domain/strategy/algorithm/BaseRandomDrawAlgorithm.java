@@ -1,7 +1,7 @@
 package com.flameking.lottery.domain.strategy.algorithm;
 
-import com.flameking.lottery.domain.strategy.model.AwardRateInfo;
-import com.flameking.lottery.infrastructure.entity.StrategyDetail;
+import com.flameking.lottery.domain.strategy.model.vo.AwardRateInfo;
+import com.flameking.lottery.domain.strategy.model.vo.StrategyDetailBriefVO;
 import org.springframework.util.Assert;
 
 import java.util.ArrayList;
@@ -17,7 +17,7 @@ public abstract class BaseRandomDrawAlgorithm implements IRandomDrawAlgorithm {
     protected Map<Long, List<AwardRateInfo>> commonAwardRateInfos = new HashMap<>();
 
     @Override
-    public void initAwardRateInfo(Long strategyId, List<StrategyDetail> strategyDetails){
+    public void initAwardRateInfo(Long strategyId, List<StrategyDetailBriefVO> strategyDetails){
         Assert.notEmpty(strategyDetails, "奖品概率信息为空");
         //奖品概率信息已初始化
         if (commonAwardRateInfos.containsKey(strategyId)){

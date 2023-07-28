@@ -1,7 +1,7 @@
 package com.flameking.lottery.domain.strategy.algorithm.impl;
 
 import com.flameking.lottery.domain.strategy.algorithm.BaseRandomDrawAlgorithm;
-import com.flameking.lottery.domain.strategy.model.AwardRateInfo;
+import com.flameking.lottery.domain.strategy.model.vo.AwardRateInfo;
 
 import java.util.ArrayList;
 import java.util.List;

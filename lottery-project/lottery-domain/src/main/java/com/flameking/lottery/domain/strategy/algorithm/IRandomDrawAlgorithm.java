@@ -1,6 +1,6 @@
 package com.flameking.lottery.domain.strategy.algorithm;
 
-import com.flameking.lottery.infrastructure.entity.StrategyDetail;
+import com.flameking.lottery.domain.strategy.model.vo.StrategyDetailBriefVO;
 
 import java.util.List;
 
@@ -25,5 +25,5 @@ public interface IRandomDrawAlgorithm {
      * @param strategyId      策略id
      * @param strategyDetails 奖品概率信息
      */
-    void initAwardRateInfo(Long strategyId, List<StrategyDetail> strategyDetails);
+    void initAwardRateInfo(Long strategyId, List<StrategyDetailBriefVO> strategyDetails);
 }

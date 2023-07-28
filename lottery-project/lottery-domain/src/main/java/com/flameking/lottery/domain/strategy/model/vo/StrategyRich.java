@@ -1,7 +1,5 @@
-package com.flameking.lottery.domain.strategy.model;
+package com.flameking.lottery.domain.strategy.model.vo;
 
-import com.flameking.lottery.infrastructure.entity.Strategy;
-import com.flameking.lottery.infrastructure.entity.StrategyDetail;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -15,7 +13,7 @@ public class StrategyRich {
     // 策略ID
     private Long strategyId;
     // 策略配置
-    private Strategy strategy;
+    private StrategyBriefVO strategy;
     // 策略明细
-    private List<StrategyDetail> strategyDetailList;
+    private List<StrategyDetailBriefVO> strategyDetailList;
 }
