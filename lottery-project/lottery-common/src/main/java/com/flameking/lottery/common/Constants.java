@@ -2,6 +2,7 @@ package com.flameking.lottery.common;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.Setter;
 
 /**
  * 枚举信息定义
@@ -36,6 +37,34 @@ public class Constants {
             return info;
         }
 
+    }
+
+    /**
+     * 抽奖策略模式：总体概率、单项概率
+     * 场景：两种抽奖算法描述，场景A20%、B30%、C50%
+     * 单项概率：如果A奖品抽空后，B和C保持目前中奖概率，用户抽奖扔有20%中为A，因A库存抽空则结果展示为未中奖。为了运营成本，通常这种情况的使用的比较多
+     * 总体概率：如果A奖品抽空后，B和C奖品的概率按照 3:5 均分，相当于B奖品中奖概率由 0.3 升为 0.375
+     */
+    @Getter
+    public enum StrategyMode {
+
+        /**
+         * 单项概率：如果A奖品抽空后，B和C保持目前中奖概率，用户抽奖扔有20%中为A，因A库存抽空则结果展示为未中奖。为了运营成本，通常这种情况的使用的比较多
+         */
+        SINGLE(1, "单项概率"),
+
+        /**
+         * 总体概率：如果A奖品抽空后，B和C奖品的概率按照 3:5 均分，相当于B奖品中奖概率由 0.3 升为 0.375
+         */
+        ENTIRETY(2, "总体概率");
+
+        private final Integer code;
+        private final String info;
+
+        StrategyMode(Integer code, String info) {
+            this.code = code;
+            this.info = info;
+        }
     }
 
     /**
@@ -153,6 +182,39 @@ public class Constants {
             this.info = info;
         }
     }
+
+    /**
+     * 活动状态：1编辑、2提审、3撤审、4通过、5运行(审核通过后worker扫描状态)、6拒绝、7关闭、8开启
+     */
+    @Getter
+    public enum ActivityState {
+
+        /** 1：编辑 */
+        EDIT(1, "编辑"),
+        /** 2：提审 */
+        ARRAIGNMENT(2, "提审"),
+        /** 3：撤审 */
+        REVOKE(3, "撤审"),
+        /** 4：通过 */
+        PASS(4, "通过"),
+        /** 5：运行(活动中) */
+        DOING(5, "运行(活动中)"),
+        /** 6：拒绝 */
+        REFUSE(6, "拒绝"),
+        /** 7：关闭 */
+        CLOSE(7, "关闭"),
+        /** 8：开启 */
+        OPEN(8, "开启");
+
+        private final Integer code;
+        private final String info;
+
+        ActivityState(Integer code, String info) {
+            this.code = code;
+            this.info = info;
+        }
+    }
+
 
     /**
      * Ids 生成策略枚举

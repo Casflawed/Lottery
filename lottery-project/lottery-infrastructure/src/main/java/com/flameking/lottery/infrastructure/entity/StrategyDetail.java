@@ -14,30 +14,44 @@ import java.time.LocalDateTime;
  * @dateTime 2023-07-19 22:20:52
  */
 @Data
-public class StrategyDetail{
+public class StrategyDetail {
     private static final long serialVersionUID = 1L;
 
     private Long id;
 
-    /** 策略ID */
+    /**
+     * 策略ID
+     */
     private Long strategyId;
 
-    /** 奖品ID */
+    /**
+     * 奖品ID
+     */
     private Long awardId;
 
-    /** 奖品数量 */
+    /**
+     * 奖品数量
+     */
     private Integer awardCount;
 
-    /** 奖品剩余数量 */
+    /**
+     * 奖品剩余数量
+     */
     private Integer awardLeftCount;
 
-    /** 中奖概率 */
+    /**
+     * 中奖概率
+     */
     private Double awardRate;
 
-    /** 创建时间 */
+    /**
+     * 创建时间
+     */
     private LocalDateTime createTime;
 
-    /** 修改时间 */
+    /**
+     * 修改时间
+     */
     private LocalDateTime updateTime;
 
 

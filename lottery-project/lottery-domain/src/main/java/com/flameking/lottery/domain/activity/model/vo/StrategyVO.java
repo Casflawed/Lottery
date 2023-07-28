@@ -1,20 +1,15 @@
-package com.flameking.lottery.infrastructure.entity;
+package com.flameking.lottery.domain.activity.model.vo;
 
 import lombok.Data;
 
-import java.time.LocalDateTime;
+import java.util.Date;
+import java.util.List;
 
 /**
- * 策略配置实体类
- *
- * @author WangWei
- * @dateTime 2023-07-21 15:12:54
+ * 策略信息配置
  */
 @Data
-public class Strategy {
-    private static final long serialVersionUID = 1L;
-
-    private Long id;
+public class StrategyVO {
 
     /**
      * 策略ID
@@ -34,27 +29,22 @@ public class Strategy {
     /**
      * 发放奖品方式「1:即时、2:定时[含活动结束]、3:人工」
      */
-    private Long grantType;
+    private Integer grantType;
 
     /**
      * 发放奖品时间
      */
-    private LocalDateTime grantDate;
+    private Date grantDate;
 
     /**
      * 扩展信息
      */
     private String extInfo;
 
-    /**
-     * 创建时间
-     */
-    private LocalDateTime createTime;
 
     /**
-     * 修改时间
+     * 策略详情配置
      */
-    private LocalDateTime updateTime;
-
+    private List<StrategyDetailVO> strategyDetailList;
 
 }
