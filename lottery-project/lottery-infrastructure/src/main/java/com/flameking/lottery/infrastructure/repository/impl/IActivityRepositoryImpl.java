@@ -1,5 +1,6 @@
 package com.flameking.lottery.infrastructure.repository.impl;
 
+import com.flameking.lottery.common.Constants;
 import com.flameking.lottery.common.util.EntityUtils;
 import com.flameking.lottery.domain.activity.model.vo.ActivityVO;
 import com.flameking.lottery.domain.activity.model.vo.AwardVO;
@@ -59,5 +60,10 @@ public class IActivityRepositoryImpl implements IActivityRepository {
 
         return strategyDetailService.saveBatch(strategyDetails);
 
+    }
+
+    @Override
+    public boolean alterStatus(Long activityId, Constants.ActivityState currentState, Constants.ActivityState transferState) {
+        return activityService.alterState(activityId, currentState, transferState);
     }
 }

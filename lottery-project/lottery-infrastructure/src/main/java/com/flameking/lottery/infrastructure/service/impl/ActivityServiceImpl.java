@@ -1,7 +1,9 @@
 package com.flameking.lottery.infrastructure.service.impl;
 
 
+import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.flameking.lottery.common.Constants;
 import com.flameking.lottery.infrastructure.entity.Activity;
 import com.flameking.lottery.infrastructure.mapper.ActivityMapper;
 import com.flameking.lottery.infrastructure.service.IActivityService;
@@ -16,4 +18,13 @@ import org.springframework.stereotype.Service;
 @Service
 public class ActivityServiceImpl extends ServiceImpl<ActivityMapper, Activity> implements IActivityService {
 
+    @Override
+    public boolean alterState(Long activityId, Constants.ActivityState currentState, Constants.ActivityState transferState) {
+        LambdaUpdateWrapper<Activity> updateWrapper = new LambdaUpdateWrapper<>();
+        //数据库行锁，解决并发问题
+        updateWrapper.set(Activity::getState, transferState.getCode())
+                .eq(Activity::getActivityId, activityId)
+                .eq(Activity::getState, currentState.getCode());
+        return update(updateWrapper);
+    }
 }

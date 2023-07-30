@@ -9,6 +9,8 @@ import com.flameking.lottery.domain.activity.model.vo.AwardVO;
 import com.flameking.lottery.domain.activity.model.vo.StrategyDetailVO;
 import com.flameking.lottery.domain.activity.model.vo.StrategyVO;
 import com.flameking.lottery.domain.activity.service.deploy.IActivityDeploy;
+import com.flameking.lottery.domain.activity.service.workflow.machine.ActivityStateMachine;
+import com.flameking.lottery.domain.activity.service.workflow.state.support.ActivityStateSupport;
 import com.flameking.lottery.domain.award.model.res.AwardSenderRes;
 import com.flameking.lottery.domain.award.template.IAwardSenderTemplate;
 import com.flameking.lottery.domain.strategy.draw.IDrawTemplate;
@@ -54,6 +56,8 @@ public class ApiTest {
     private IAwardSenderTemplate awardSenderTemplate;
     @Autowired
     private IActivityDeploy activityDeploy;
+    @Autowired
+    private ActivityStateMachine activityStateMachine;
 
     @Test
     public void test_insert() {
@@ -214,6 +218,15 @@ public class ApiTest {
     @Test
     public void test_createActivity() {
         activityDeploy.createActivity(new ActivityConfigReq(activityId, activityConfigRich));
+    }
+
+    @Test
+    public void test_alterState() {
+        activityStateMachine.setActivityState(ActivityStateSupport.getActivityState(Constants.ActivityState.EDIT));
+        log.debug("提交审核：" + activityStateMachine.doArraignment(100001L));
+        log.debug("审核通过：" + activityStateMachine.doPass(100001L));
+        log.debug("运行活动：" + activityStateMachine.doDoing(100001L));
+        log.debug("二次提审：" + activityStateMachine.doPass(100001L));
     }
 
 }
