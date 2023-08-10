@@ -21,7 +21,7 @@ import org.springframework.stereotype.Component;
 import java.util.List;
 
 @Component
-public class IActivityRepositoryImpl implements IActivityRepository {
+public class ActivityRepositoryImpl implements IActivityRepository {
     @Autowired
     private IActivityService activityService;
     @Autowired

@@ -1,7 +1,7 @@
 package com.flameking.lottery.domain.award.template.impl;
 
 import com.flameking.lottery.common.Constants;
-import com.flameking.lottery.domain.award.factory.SeedGoodsFactory;
+import com.flameking.lottery.domain.award.factory.SendGoodsFactory;
 import com.flameking.lottery.domain.award.goods.ISendGoods;
 import com.flameking.lottery.domain.award.model.req.GoodsReq;
 import com.flameking.lottery.domain.award.model.res.AwardSenderRes;
@@ -32,7 +32,7 @@ public class AwardSenderTemplateImpl implements IAwardSenderTemplate {
 
         //根据奖品类型执行不同的发奖（配送）方式
         Integer awardType = drawAwardInfo.getAwardType();
-        ISendGoods sendGoods = SeedGoodsFactory.getSendGoods(awardType);
+        ISendGoods sendGoods = SendGoodsFactory.getSendGoods(awardType);
 
         //orderId 使用用户参与活动时生成
         GoodsReq req = new GoodsReq(uId, orderId, drawAwardInfo.getAwardId(), drawAwardInfo.getAwardName(), drawAwardInfo.getAwardContent());

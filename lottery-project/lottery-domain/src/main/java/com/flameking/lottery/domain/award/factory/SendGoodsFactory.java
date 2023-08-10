@@ -13,7 +13,7 @@ import java.util.Map;
 /**
  * 分发商品静态工厂类
  */
-public class SeedGoodsFactory {
+public class SendGoodsFactory {
     public final static Map<Integer, ISendGoods> sendGoodsMap = new HashMap<>();
 
     static {
