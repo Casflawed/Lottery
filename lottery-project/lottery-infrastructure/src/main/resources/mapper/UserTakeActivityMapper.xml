@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.flameking.lottery.infrastructure.mapper.UserTakeActivityMapper">
+
+    <resultMap type="com.flameking.lottery.infrastructure.entity.UserTakeActivity" id="UserTakeActivityMap">
+            <result property="id" column="id"    />
+            <result property="uId" column="uId"    />
+            <result property="takeId" column="takeId"    />
+            <result property="activityId" column="activityId"    />
+            <result property="activityName" column="activityName"    />
+            <result property="takeDate" column="takeDate"    />
+            <result property="takeCount" column="takeCount"    />
+            <result property="uuid" column="uuid"    />
+            <result property="createTime" column="createTime"    />
+            <result property="updateTime" column="updateTime"    />
+    </resultMap>
+
+    <sql id="sql">
+ id, uId, takeId, activityId, activityName, takeDate, takeCount, uuid, createTime, updateTime    </sql>
+
+
+</mapper>

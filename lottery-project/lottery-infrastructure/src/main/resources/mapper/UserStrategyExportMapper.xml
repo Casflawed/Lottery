@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.flameking.lottery.infrastructure.mapper.UserStrategyExportMapper">
+
+    <resultMap type="com.flameking.lottery.infrastructure.entity.UserStrategyExport" id="UserStrategyExportMap">
+            <result property="id" column="id"    />
+            <result property="uId" column="uId"    />
+            <result property="activityId" column="activityId"    />
+            <result property="orderId" column="orderId"    />
+            <result property="strategyId" column="strategyId"    />
+            <result property="strategyType" column="strategyType"    />
+            <result property="grantType" column="grantType"    />
+            <result property="grantDate" column="grantDate"    />
+            <result property="grantState" column="grantState"    />
+            <result property="awardId" column="awardId"    />
+            <result property="awardType" column="awardType"    />
+            <result property="awardName" column="awardName"    />
+            <result property="awardContent" column="awardContent"    />
+            <result property="uuid" column="uuid"    />
+            <result property="createTime" column="createTime"    />
+            <result property="updateTime" column="updateTime"    />
+    </resultMap>
+
+    <sql id="sql">
+ id, uId, activityId, orderId, strategyId, strategyType, grantType, grantDate, grantState, awardId, awardType, awardName, awardContent, uuid, createTime, updateTime    </sql>
+
+
+</mapper>
