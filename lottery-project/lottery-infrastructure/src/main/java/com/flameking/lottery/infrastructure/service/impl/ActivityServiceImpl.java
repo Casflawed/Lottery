@@ -1,6 +1,7 @@
 package com.flameking.lottery.infrastructure.service.impl;
 
 
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.flameking.lottery.common.Constants;
@@ -25,6 +26,21 @@ public class ActivityServiceImpl extends ServiceImpl<ActivityMapper, Activity> i
         updateWrapper.set(Activity::getState, transferState.getCode())
                 .eq(Activity::getActivityId, activityId)
                 .eq(Activity::getState, currentState.getCode());
+        return update(updateWrapper);
+    }
+
+    @Override
+    public Activity queryActivityById(Long activityId) {
+        return getOne(new LambdaQueryWrapper<Activity>()
+                .eq(Activity::getActivityId, activityId));
+    }
+
+    @Override
+    public boolean subtractionActivityStock(Long activityId) {
+        LambdaUpdateWrapper<Activity> updateWrapper = new LambdaUpdateWrapper<>();
+        updateWrapper.setSql("stock_surplus_count = stock_surplus_count - 1")
+                .eq(Activity::getActivityId, activityId)
+                .gt(Activity::getStockSurplusCount, 0);
         return update(updateWrapper);
     }
 }

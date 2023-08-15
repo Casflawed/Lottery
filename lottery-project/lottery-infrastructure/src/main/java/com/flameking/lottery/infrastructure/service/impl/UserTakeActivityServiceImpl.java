@@ -8,6 +8,7 @@ import javax.annotation.Resource;
 import com.flameking.lottery.infrastructure.mapper.UserTakeActivityMapper;
 import com.flameking.lottery.infrastructure.service.IUserTakeActivityService;
 import com.flameking.middleware.db.router.annotation.DbRouter;
+import com.flameking.middleware.db.router.support.DataSourceContextHolder;
 import org.springframework.stereotype.Service;
 
 
@@ -39,8 +40,9 @@ public class UserTakeActivityServiceImpl extends ServiceImpl<UserTakeActivityMap
     }
 
     @Override
-    @DbRouter
+//    @DbRouter
     public Long create(UserTakeActivity userTakeActivity) {
+        DataSourceContextHolder.setDbKey("02");
         save(userTakeActivity);
         return userTakeActivity.getId();
     }

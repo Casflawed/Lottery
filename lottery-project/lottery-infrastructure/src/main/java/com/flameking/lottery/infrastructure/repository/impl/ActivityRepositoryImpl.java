@@ -2,19 +2,11 @@ package com.flameking.lottery.infrastructure.repository.impl;
 
 import com.flameking.lottery.common.Constants;
 import com.flameking.lottery.common.util.EntityUtils;
-import com.flameking.lottery.domain.activity.model.vo.ActivityVO;
-import com.flameking.lottery.domain.activity.model.vo.AwardVO;
-import com.flameking.lottery.domain.activity.model.vo.StrategyDetailVO;
-import com.flameking.lottery.domain.activity.model.vo.StrategyVO;
+import com.flameking.lottery.domain.activity.model.aggregates.PartakeReq;
+import com.flameking.lottery.domain.activity.model.vo.*;
 import com.flameking.lottery.domain.activity.repository.IActivityRepository;
-import com.flameking.lottery.infrastructure.entity.Activity;
-import com.flameking.lottery.infrastructure.entity.Award;
-import com.flameking.lottery.infrastructure.entity.Strategy;
-import com.flameking.lottery.infrastructure.entity.StrategyDetail;
-import com.flameking.lottery.infrastructure.service.IActivityService;
-import com.flameking.lottery.infrastructure.service.IAwardService;
-import com.flameking.lottery.infrastructure.service.IStrategyDetailService;
-import com.flameking.lottery.infrastructure.service.IStrategyService;
+import com.flameking.lottery.infrastructure.entity.*;
+import com.flameking.lottery.infrastructure.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -30,6 +22,8 @@ public class ActivityRepositoryImpl implements IActivityRepository {
     private IStrategyService strategyService;
     @Autowired
     private IStrategyDetailService strategyDetailService;
+    @Autowired
+    private IUserTakeActivityCountService userTakeActivityCountService;
 
     @Override
     public boolean insertActivity(ActivityVO activityVO) {
@@ -65,5 +59,31 @@ public class ActivityRepositoryImpl implements IActivityRepository {
     @Override
     public boolean alterStatus(Long activityId, Constants.ActivityState currentState, Constants.ActivityState transferState) {
         return activityService.alterState(activityId, currentState, transferState);
+    }
+
+    @Override
+    public ActivityBillVO queryActivityBill(PartakeReq req) {
+
+        // 查询活动信息
+        Activity activity = activityService.queryActivityById(req.getActivityId());
+
+        // 查询可领取次数和剩余领取次数
+        UserTakeActivityCount userTakeActivityCountReq = new UserTakeActivityCount();
+        EntityUtils.copyProperties(req, userTakeActivityCountReq);
+
+        UserTakeActivityCount userTakeActivityCount = userTakeActivityCountService.queryUserTakeActivityCount(userTakeActivityCountReq);
+
+        // 封装结果信息
+        ActivityBillVO activityBillVO = new ActivityBillVO();
+        activityBillVO.setUId(req.getUId());
+        activityBillVO.setUserTakeLeftCount(null == userTakeActivityCount ? null : userTakeActivityCount.getLeftCount());
+        EntityUtils.copyProperties(activity, activityBillVO);
+
+        return activityBillVO;
+    }
+
+    @Override
+    public boolean subtractionActivityStock(Long activityId) {
+        return activityService.subtractionActivityStock(activityId);
     }
 }

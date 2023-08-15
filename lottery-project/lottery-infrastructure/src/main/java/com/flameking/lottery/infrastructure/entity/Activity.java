@@ -53,6 +53,11 @@ public class Activity {
     private Integer stockCount;
 
     /**
+     * 库存剩余
+     */
+    private Integer stockSurplusCount;
+
+    /**
      * 每人可参与次数
      */
     private Integer takeCount;
@@ -61,6 +66,11 @@ public class Activity {
      * 活动状态：1编辑、2提审、3撤审、4通过、5运行(审核通过后worker扫描状态)、6拒绝、7关闭、8开启
      */
     private Integer state;
+
+    /**
+     * 活动关联的策略id
+     */
+    private Long strategyId;
 
     /**
      * 创建人

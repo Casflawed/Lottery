@@ -11,14 +11,16 @@
             <result property="endDateTime" column="end_date_time"    />
             <result property="stockCount" column="stock_count"    />
             <result property="takeCount" column="take_count"    />
+            <result property="stockSurplusCount" column="stock_surplus_count"    />
             <result property="state" column="state"    />
+            <result property="strategyId" column="strategy_id"    />
             <result property="creator" column="creator"    />
             <result property="createTime" column="create_time"    />
             <result property="updateTime" column="update_time"    />
     </resultMap>
 
     <sql id="sql">
- id, activity_id, activity_name, activity_desc, begin_date_time, end_date_time, stock_count, take_count, state, creator, create_time, update_time    </sql>
+ id, activity_id, activity_name, activity_desc, begin_date_time, end_date_time, stock_count, take_count, stock_surplus_count, state, strategy_id, creator, create_time, update_time    </sql>
 
 
 </mapper>

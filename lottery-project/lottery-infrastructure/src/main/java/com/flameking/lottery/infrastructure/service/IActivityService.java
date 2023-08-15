@@ -15,4 +15,8 @@ public interface IActivityService extends IService<Activity> {
      * @param transferState 转换后状态
      */
     boolean alterState(Long activityId, Constants.ActivityState currentState, Constants.ActivityState transferState);
+
+    Activity queryActivityById(Long activityId);
+
+    boolean subtractionActivityStock(Long activityId);
 }
