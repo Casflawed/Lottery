@@ -7,7 +7,7 @@ import javax.annotation.Resource;
 
 import com.flameking.lottery.infrastructure.mapper.UserTakeActivityMapper;
 import com.flameking.lottery.infrastructure.service.IUserTakeActivityService;
-import com.flameking.middleware.db.router.annotation.DbRouter;
+import com.flameking.middleware.db.router.annotation.DBRouter;
 import org.springframework.stereotype.Service;
 
 
@@ -33,7 +33,7 @@ public class UserTakeActivityServiceImpl extends ServiceImpl<UserTakeActivityMap
 //    }
 
     @Override
-    @DbRouter
+    @DBRouter
     public UserTakeActivity findById(Long id) {
         return getById(id);
     }

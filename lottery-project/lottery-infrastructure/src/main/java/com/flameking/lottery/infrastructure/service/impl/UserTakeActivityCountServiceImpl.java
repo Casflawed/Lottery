@@ -9,7 +9,7 @@ import javax.annotation.Resource;
 
 import com.flameking.lottery.infrastructure.mapper.UserTakeActivityCountMapper;
 import com.flameking.lottery.infrastructure.service.IUserTakeActivityCountService;
-import com.flameking.middleware.db.router.annotation.DbRouter;
+import com.flameking.middleware.db.router.annotation.DBRouter;
 import org.springframework.stereotype.Service;
 
 
@@ -55,7 +55,7 @@ public class UserTakeActivityCountServiceImpl extends ServiceImpl<UserTakeActivi
     }
 
     @Override
-    @DbRouter
+    @DBRouter
     public UserTakeActivityCount queryUserTakeActivityCount(UserTakeActivityCount req) {
         return getOne(new LambdaQueryWrapper<UserTakeActivityCount>()
                 .eq(UserTakeActivityCount::getUId, req.getUId())
