@@ -2,7 +2,6 @@ package com.flameking.lottery.infrastructure.service;
 
 import com.flameking.lottery.infrastructure.entity.UserTakeActivity;
 import com.baomidou.mybatisplus.extension.service.IService;
-import com.flameking.middleware.db.router.annotation.DbRouter;
 
 /**
  * 用户参与活动记录服务层接口
@@ -16,7 +15,7 @@ public interface IUserTakeActivityService extends IService<UserTakeActivity> {
 
      UserTakeActivity findById(Long id);
 
-     Long create(UserTakeActivity userTakeActivity);
+     boolean create(UserTakeActivity userTakeActivity);
 
      boolean update(UserTakeActivity userTakeActivity);
 

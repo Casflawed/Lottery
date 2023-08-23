@@ -15,12 +15,14 @@ public interface IUserTakeActivityCountService extends IService<UserTakeActivity
 
      UserTakeActivityCount findById(String id);
 
-     Long create(UserTakeActivityCount userTakeActivityCount);
+     boolean create(UserTakeActivityCount userTakeActivityCount);
 
      boolean update(UserTakeActivityCount userTakeActivityCount);
 
      boolean del(String id);
 
      UserTakeActivityCount queryUserTakeActivityCount(UserTakeActivityCount req);
+
+     boolean updateLeftCount(UserTakeActivityCount userTakeActivityCount);
 }
 
