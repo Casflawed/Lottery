@@ -14,6 +14,7 @@ import com.flameking.lottery.domain.activity.service.workflow.state.support.Acti
 import com.flameking.lottery.domain.award.model.res.AwardSenderRes;
 import com.flameking.lottery.domain.award.template.IAwardSenderTemplate;
 import com.flameking.lottery.domain.strategy.draw.IDrawTemplate;
+import com.flameking.lottery.domain.strategy.model.req.DrawReq;
 import com.flameking.lottery.domain.strategy.model.res.DrawResult;
 import com.flameking.lottery.rpc.IActivityBooth;
 import com.flameking.lottery.rpc.dto.ActivityDto;
@@ -86,7 +87,7 @@ public class ApiTest {
     public void test_draw() {
         Long strategyId = 1001L;
         for (int i = 0; i < 100; ++i) {
-            DrawResult drawResult = drawTemplate.doDraw(1001L, strategyId);
+            DrawResult drawResult = drawTemplate.doDraw(new DrawReq());
             System.out.println(JSON.toJSONString(drawResult));
         }
 
@@ -98,7 +99,7 @@ public class ApiTest {
         Long uId = 1001L;
         String orderId = "0001";
         for (int i = 0; i < 100; i++){
-            AwardSenderRes awardSenderRes = awardSenderTemplate.sendAward(uId, strategyId, orderId);
+            AwardSenderRes awardSenderRes = awardSenderTemplate.sendAward(String.valueOf(uId), strategyId, orderId);
             System.out.println(JSON.toJSONString(awardSenderRes));
         }
 

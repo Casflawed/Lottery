@@ -37,7 +37,7 @@ public class StrategyDetail {
     /**
      * 奖品剩余数量
      */
-    private Integer awardLeftCount;
+    private Integer awardSurplusCount;
 
     /**
      * 中奖概率

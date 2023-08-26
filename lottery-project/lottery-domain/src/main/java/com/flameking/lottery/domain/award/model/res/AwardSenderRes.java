@@ -17,7 +17,7 @@ public class AwardSenderRes {
     /**
      * 用户ID
      */
-    private Long uId;
+    private String uId;
 
     /**
      * 编码
@@ -41,7 +41,7 @@ public class AwardSenderRes {
      * @param code 编码
      * @param info 描述
      */
-    public AwardSenderRes(Long uId, Integer code, String info) {
+    public AwardSenderRes(String uId, Integer code, String info) {
         this.uId = uId;
         this.code = code;
         this.info = info;

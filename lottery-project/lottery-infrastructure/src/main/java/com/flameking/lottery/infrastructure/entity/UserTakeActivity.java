@@ -38,6 +38,12 @@ public class UserTakeActivity{
     /** 防重ID */
     private String uuid;
 
+    /** 活动单使用状态 0未使用、1已使用 */
+    private Integer state;
+
+    /** 策略id */
+    private Long strategyId;
+
     /**  */
     private LocalDateTime createTime;
 

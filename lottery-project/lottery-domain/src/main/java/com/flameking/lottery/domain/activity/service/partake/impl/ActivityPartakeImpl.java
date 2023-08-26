@@ -4,11 +4,11 @@ import com.flameking.lottery.common.Constants;
 import com.flameking.lottery.common.Result;
 import com.flameking.lottery.domain.activity.model.aggregates.PartakeReq;
 import com.flameking.lottery.domain.activity.model.vo.ActivityBillVO;
+import com.flameking.lottery.domain.activity.model.vo.DrawOrderVO;
 import com.flameking.lottery.domain.activity.repository.IActivityRepository;
 import com.flameking.lottery.domain.activity.repository.IUserTakeActivityCountRepository;
 import com.flameking.lottery.domain.activity.repository.IUserTakeActivityRepository;
 import com.flameking.lottery.domain.activity.service.partake.BaseActivityPartake;
-import com.flameking.lottery.domain.ids.IIdGenerator;
 import com.flameking.middleware.db.router.strategy.IDBRouterStrategy;
 import com.flameking.middleware.db.router.support.DataSourceContextHolder;
 import lombok.extern.slf4j.Slf4j;
@@ -17,23 +17,19 @@ import org.springframework.dao.DuplicateKeyException;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.support.TransactionTemplate;
 
-import java.util.Map;
-
-@Component
 @Slf4j
+@Component
 public class ActivityPartakeImpl extends BaseActivityPartake {
     @Autowired
     private IActivityRepository activityRepository;
     @Autowired
-    private IDBRouterStrategy doRouter;
+    private IDBRouterStrategy dbRouter;
     @Autowired
     private TransactionTemplate transactionTemplate;
     @Autowired
     private IUserTakeActivityCountRepository userTakeActivityCountRepository;
     @Autowired
     private IUserTakeActivityRepository userTakeActivityRepository;
-    @Autowired
-    private Map<Constants.Ids, IIdGenerator> idGeneratorMap;
 
     @Override
     protected Result subtractionActivityStock(PartakeReq req) {
@@ -81,9 +77,9 @@ public class ActivityPartakeImpl extends BaseActivityPartake {
     }
 
     @Override
-    protected Result grabActivity(PartakeReq partake, ActivityBillVO bill) {
+    protected Result grabActivity(PartakeReq partake, ActivityBillVO bill, Long takeId) {
         // 用了这个就必须手动释放ThreadLocal内的路由信息
-        doRouter.doRouter(partake.getUId());
+        dbRouter.doRouter(partake.getUId());
         try {
             return transactionTemplate.execute(status -> {
                 try {
@@ -95,7 +91,6 @@ public class ActivityPartakeImpl extends BaseActivityPartake {
                         return Result.buildResult(Constants.ResponseCode.NO_UPDATE);
                     }
                     // 插入领取活动信息
-                    Long takeId = idGeneratorMap.get(Constants.Ids.SnowFlake).nextId();
                     userTakeActivityRepository.takeActivity(partake, bill, takeId);
 
                 } catch (DuplicateKeyException e) {
@@ -108,6 +103,35 @@ public class ActivityPartakeImpl extends BaseActivityPartake {
         } finally {
             DataSourceContextHolder.clear();
         }
+    }
+
+    @Override
+    public Result recordDrawOrder(DrawOrderVO drawOrder) {
+        try {
+            dbRouter.doRouter(drawOrder.getUId());
+            return transactionTemplate.execute(status -> {
+                try {
+                    // 锁定活动领取记录
+                    boolean isSuccess = userTakeActivityRepository.lockTackActivity(drawOrder.getUId(), drawOrder.getActivityId(), drawOrder.getTakeId());
+                    if (!isSuccess) {
+                        status.setRollbackOnly();
+                        log.error("记录中奖单，个人参与活动抽奖已消耗完 activityId：{} uId：{}", drawOrder.getActivityId(), drawOrder.getUId());
+                        return Result.buildResult(Constants.ResponseCode.NO_UPDATE);
+                    }
+
+                    // 保存抽奖信息
+                    userTakeActivityRepository.saveUserStrategyExport(drawOrder);
+                } catch (DuplicateKeyException e) {
+                    status.setRollbackOnly();
+                    log.error("记录中奖单，唯一索引冲突 activityId：{} uId：{}", drawOrder.getActivityId(), drawOrder.getUId(), e);
+                    return Result.buildResult(Constants.ResponseCode.INDEX_DUP);
+                }
+                return Result.buildSuccessResult();
+            });
+        } finally {
+            DataSourceContextHolder.clear();
+        }
+
     }
 
 }

@@ -13,17 +13,17 @@ public class UserTakeActivityCountRepository implements IUserTakeActivityCountRe
     private IUserTakeActivityCountService userTakeActivityCountService;
 
     public boolean subtractionLeftCount(ActivityBillVO bill) {
+        UserTakeActivityCount userTakeActivityCount = new UserTakeActivityCount();
         if (null == bill.getUserTakeLeftCount()) {
-            UserTakeActivityCount userTakeActivityCount = new UserTakeActivityCount();
             userTakeActivityCount.setUId(bill.getUId());
             userTakeActivityCount.setActivityId(bill.getActivityId());
             userTakeActivityCount.setTotalCount(bill.getTakeCount());
             userTakeActivityCount.setLeftCount(bill.getTakeCount() - 1);
             return userTakeActivityCountService.create(userTakeActivityCount);
         } else {
-            UserTakeActivityCount userTakeActivityCount = new UserTakeActivityCount();
             userTakeActivityCount.setUId(bill.getUId());
             userTakeActivityCount.setActivityId(bill.getActivityId());
+            bill.setUserTakeLeftCount(bill.getUserTakeLeftCount() - 1);
             return userTakeActivityCountService.updateLeftCount(userTakeActivityCount);
         }
     }

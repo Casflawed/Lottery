@@ -14,5 +14,5 @@ public interface IAwardSenderTemplate {
      * @param strategyId
      * @param orderId
      */
-    AwardSenderRes sendAward(Long uId, Long strategyId, String orderId);
+    AwardSenderRes sendAward(String uId, Long strategyId, String orderId);
 }

@@ -30,7 +30,7 @@ public class UserStrategyExport {
     private Long strategyId;
 
     /** 策略方式（1.单项概率；2.总体概率） */
-    private Integer strategyType;
+    private Integer strategyMode;
 
     /** 发放奖品方式（1.即时；2.定时[含活动结束]；3.人工） */
     private Integer grantType;

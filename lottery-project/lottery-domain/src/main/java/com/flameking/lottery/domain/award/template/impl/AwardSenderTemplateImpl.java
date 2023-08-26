@@ -7,6 +7,7 @@ import com.flameking.lottery.domain.award.model.req.GoodsReq;
 import com.flameking.lottery.domain.award.model.res.AwardSenderRes;
 import com.flameking.lottery.domain.award.template.IAwardSenderTemplate;
 import com.flameking.lottery.domain.strategy.draw.IDrawTemplate;
+import com.flameking.lottery.domain.strategy.model.req.DrawReq;
 import com.flameking.lottery.domain.strategy.model.res.DrawResult;
 import com.flameking.lottery.domain.strategy.model.vo.DrawAwardInfo;
 import lombok.extern.slf4j.Slf4j;
@@ -20,9 +21,9 @@ public class AwardSenderTemplateImpl implements IAwardSenderTemplate {
     private IDrawTemplate drawTemplate;
 
     @Override
-    public AwardSenderRes sendAward(Long uId, Long strategyId, String orderId) {
+    public AwardSenderRes sendAward(String uId, Long strategyId, String orderId) {
         //执行抽奖
-        DrawResult drawResult = drawTemplate.doDraw(uId, strategyId);
+        DrawResult drawResult = drawTemplate.doDraw(new DrawReq(uId, strategyId, null));
         if (drawResult.getDrawState().equals(Constants.DrawState.FAIL.getCode())){
             log.debug("用户-" + uId + "抽奖结果-" + drawResult.getDrawStateName());
             return new AwardSenderRes(uId, 1, "发奖失败");

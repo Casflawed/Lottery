@@ -1,6 +1,5 @@
 package com.flameking.lottery.interfaces;
 
-import com.alibaba.fastjson.JSON;
 import com.flameking.lottery.common.Constants;
 import com.flameking.lottery.domain.ids.IIdGenerator;
 import com.flameking.lottery.infrastructure.entity.UserStrategyExport;
@@ -36,7 +35,7 @@ public class DbRouterTest {
         userStrategyExport.setActivityId(idGeneratorMap.get(Constants.Ids.ShortCode).nextId());
         userStrategyExport.setOrderId(idGeneratorMap.get(Constants.Ids.SnowFlake).nextId());
         userStrategyExport.setStrategyId(idGeneratorMap.get(Constants.Ids.RandomNumeric).nextId());
-        userStrategyExport.setStrategyType(Constants.StrategyMode.SINGLE.getCode());
+        userStrategyExport.setStrategyMode(Constants.StrategyMode.SINGLE.getCode());
         userStrategyExport.setGrantType(1);
         userStrategyExport.setGrantDate(new Date());
         userStrategyExport.setGrantState(1);

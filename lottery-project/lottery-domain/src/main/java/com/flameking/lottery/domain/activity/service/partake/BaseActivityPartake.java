@@ -5,11 +5,17 @@ import com.flameking.lottery.common.Result;
 import com.flameking.lottery.domain.activity.model.aggregates.PartakeReq;
 import com.flameking.lottery.domain.activity.model.res.PartakeResult;
 import com.flameking.lottery.domain.activity.model.vo.ActivityBillVO;
+import com.flameking.lottery.domain.ids.IIdGenerator;
+import org.springframework.beans.factory.annotation.Autowired;
+
+import java.util.Map;
 
 /**
  * 活动领取模板抽象类
  */
 public abstract class BaseActivityPartake implements IActivityPartake {
+    @Autowired
+    private Map<Constants.Ids, IIdGenerator> idGeneratorMap;
 
     @Override
     public PartakeResult doPartake(PartakeReq req) {
@@ -27,15 +33,16 @@ public abstract class BaseActivityPartake implements IActivityPartake {
             return new PartakeResult(subtractionActivityResult.getCode(), subtractionActivityResult.getInfo());
         }
         //更新or插入用户参与次数信息
-        Result grabResult = grabActivity(req, activityBillVO);
+        Long takeId = idGeneratorMap.get(Constants.Ids.SnowFlake).nextId();
+        Result grabResult = grabActivity(req, activityBillVO, takeId);
         if (!Constants.ResponseCode.SUCCESS.getCode().equals(grabResult.getCode())) {
             return new PartakeResult(grabResult.getCode(), grabResult.getInfo());
         }
 
         //查询用户参与活动信息
-        PartakeResult partakeResult = new PartakeResult(Constants.ResponseCode.SUCCESS.getCode(), Constants.ResponseCode.SUCCESS.getInfo());
-        partakeResult.setStrategyId(activityBillVO.getStrategyId());
-        return partakeResult;
+        return new PartakeResult(Constants.ResponseCode.SUCCESS.getCode(),
+                Constants.ResponseCode.SUCCESS.getInfo(),
+                activityBillVO.getStrategyId(), takeId);
     }
 
     /**
@@ -57,6 +64,6 @@ public abstract class BaseActivityPartake implements IActivityPartake {
     /**
      * 参与活动，扣减用于剩余参与次数，插入用户参与活动记录
      */
-    protected abstract Result grabActivity(PartakeReq partake, ActivityBillVO bill);
+    protected abstract Result grabActivity(PartakeReq partake, ActivityBillVO bill, Long takeId);
 
 }

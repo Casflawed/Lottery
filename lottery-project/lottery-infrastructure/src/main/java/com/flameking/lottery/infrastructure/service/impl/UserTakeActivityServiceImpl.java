@@ -1,5 +1,6 @@
 package com.flameking.lottery.infrastructure.service.impl;
 
+import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 
 import com.flameking.lottery.infrastructure.entity.UserTakeActivity;
@@ -45,7 +46,11 @@ public class UserTakeActivityServiceImpl extends ServiceImpl<UserTakeActivityMap
 
     @Override
     public boolean update(UserTakeActivity userTakeActivity) {
-        return updateById(userTakeActivity);
+        LambdaUpdateWrapper<UserTakeActivity> w = new LambdaUpdateWrapper<UserTakeActivity>().setSql("state = 1")
+                .eq(UserTakeActivity::getUId, userTakeActivity.getUId())
+                .eq(UserTakeActivity::getActivityId, userTakeActivity.getActivityId())
+                .eq(UserTakeActivity::getState, 0);
+        return update(w);
     }
 
     @Override

@@ -18,7 +18,7 @@ public class DrawResult {
     /**
      * 用户ID
      */
-    private Long uId;
+    private String uId;
 
     /**
      * 策略ID
@@ -37,7 +37,7 @@ public class DrawResult {
      */
     private DrawAwardInfo drawAwardInfo;
 
-    public DrawResult(Long uId, Long strategyId, Integer drawState, String drawStateName) {
+    public DrawResult(String uId, Long strategyId, Integer drawState, String drawStateName) {
         this.uId = uId;
         this.strategyId = strategyId;
         this.drawState = drawState;

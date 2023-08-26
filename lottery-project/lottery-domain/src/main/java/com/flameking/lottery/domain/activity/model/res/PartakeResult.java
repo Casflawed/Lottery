@@ -1,10 +1,14 @@
 package com.flameking.lottery.domain.activity.model.res;
 
 import com.flameking.lottery.common.Result;
+import lombok.Getter;
+import lombok.Setter;
 
 /**
  * 活动参与结果
  */
+@Setter
+@Getter
 public class PartakeResult extends Result {
 
     /**
@@ -12,15 +16,18 @@ public class PartakeResult extends Result {
      */
     private Long strategyId;
 
+    /**
+     * 领取单id
+     */
+    private Long takeId;
+
     public PartakeResult(String code, String info) {
         super(code, info);
     }
 
-    public Long getStrategyId() {
-        return strategyId;
-    }
-
-    public void setStrategyId(Long strategyId) {
+    public PartakeResult(String code, String info, Long strategyId, Long takeId) {
+        super(code, info);
         this.strategyId = strategyId;
+        this.takeId = takeId;
     }
 }

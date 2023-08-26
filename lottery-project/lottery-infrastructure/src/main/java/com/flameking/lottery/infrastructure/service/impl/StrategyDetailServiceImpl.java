@@ -99,7 +99,7 @@ public class StrategyDetailServiceImpl extends ServiceImpl<StrategyDetailMapper,
   public List<Long> queryAwardIdsWithoutAmount(Long strategyId) {
     List<StrategyDetail> strategyDetails = list(new LambdaQueryWrapper<StrategyDetail>()
             .eq(StrategyDetail::getStrategyId, strategyId)
-            .eq(StrategyDetail::getAwardLeftCount, 0));
+            .eq(StrategyDetail::getAwardSurplusCount, 0));
     if (CollectionUtils.isNotEmpty(strategyDetails)){
       return strategyDetails.stream().map(StrategyDetail::getAwardId).collect(Collectors.toList());
     }else {
@@ -111,11 +111,11 @@ public class StrategyDetailServiceImpl extends ServiceImpl<StrategyDetailMapper,
   public boolean decreaseLeftAwardCount(Long strategyId, Long awardId) {
     LambdaUpdateWrapper<StrategyDetail> updateWrapper = new LambdaUpdateWrapper<>();
     //数据库行锁，解决并发问题
-    updateWrapper.setSql("award_left_count = award_left_count - 1")
+    updateWrapper.setSql("award_surplus_count = award_surplus_count - 1")
             .eq(StrategyDetail::getStrategyId, strategyId)
             .eq(StrategyDetail::getAwardId, awardId)
             //大于0的条件避免抽奖失败率高的情况
-            .gt(StrategyDetail::getAwardLeftCount, 0);
+            .gt(StrategyDetail::getAwardSurplusCount, 0);
     return update(updateWrapper);
   }
 

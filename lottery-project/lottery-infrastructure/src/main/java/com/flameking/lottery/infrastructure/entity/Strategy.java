@@ -3,6 +3,7 @@ package com.flameking.lottery.infrastructure.entity;
 import lombok.Data;
 
 import java.time.LocalDateTime;
+import java.util.Date;
 
 /**
  * 策略配置实体类
@@ -34,12 +35,12 @@ public class Strategy {
     /**
      * 发放奖品方式「1:即时、2:定时[含活动结束]、3:人工」
      */
-    private Long grantType;
+    private Integer grantType;
 
     /**
      * 发放奖品时间
      */
-    private LocalDateTime grantDate;
+    private Date grantDate;
 
     /**
      * 扩展信息

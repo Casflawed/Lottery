@@ -2,7 +2,6 @@ package com.flameking.lottery.infrastructure.service;
 
 import com.flameking.lottery.infrastructure.entity.UserStrategyExport;
 import com.baomidou.mybatisplus.extension.service.IService;
-import com.flameking.middleware.db.router.annotation.DbRouter;
 
 /**
  * 用户策略计算结果服务层接口

@@ -17,7 +17,7 @@ public class GoodsReq {
     /**
      * 用户ID
      */
-    private Long uId;
+    private String uId;
 
     /**
      * 抽奖单号 ID
@@ -49,7 +49,7 @@ public class GoodsReq {
      */
     private String extInfo;
 
-    public GoodsReq(Long uId, String orderId, Long awardId, String awardName, String awardContent) {
+    public GoodsReq(String uId, String orderId, Long awardId, String awardName, String awardContent) {
         this.uId = uId;
         this.orderId = orderId;
         this.awardId = awardId;
@@ -57,7 +57,7 @@ public class GoodsReq {
         this.awardContent = awardContent;
     }
 
-    public GoodsReq(Long uId, String orderId, Long awardId, String awardName, String awardContent, ShippingAddress shippingAddress) {
+    public GoodsReq(String uId, String orderId, Long awardId, String awardName, String awardContent, ShippingAddress shippingAddress) {
         this.uId = uId;
         this.orderId = orderId;
         this.awardId = awardId;

@@ -7,7 +7,7 @@ import javax.annotation.Resource;
 
 import com.flameking.lottery.infrastructure.mapper.UserStrategyExportMapper;
 import com.flameking.lottery.infrastructure.service.IUserStrategyExportService;
-import com.flameking.middleware.db.router.annotation.DbRouter;
+import com.flameking.middleware.db.router.annotation.DBRouter;
 import org.springframework.stereotype.Service;
 
 
@@ -33,13 +33,12 @@ public class UserStrategyExportServiceImpl extends ServiceImpl<UserStrategyExpor
 //    }
 
     @Override
-    @DbRouter
+    @DBRouter
     public UserStrategyExport findById(Long id) {
         return getById(id);
     }
 
     @Override
-    @DbRouter
     public Long create(UserStrategyExport userStrategyExport) {
         save(userStrategyExport);
         return userStrategyExport.getId();
