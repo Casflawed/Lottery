@@ -9,10 +9,11 @@ import com.flameking.lottery.infrastructure.entity.*;
 import com.flameking.lottery.infrastructure.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
-@Component
+@Repository
 public class ActivityRepositoryImpl implements IActivityRepository {
     @Autowired
     private IActivityService activityService;

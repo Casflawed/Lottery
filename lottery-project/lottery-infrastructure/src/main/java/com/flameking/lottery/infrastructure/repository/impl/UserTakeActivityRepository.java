@@ -12,8 +12,9 @@ import com.flameking.lottery.infrastructure.service.IUserStrategyExportService;
 import com.flameking.lottery.infrastructure.service.IUserTakeActivityService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Repository;
 
-@Component
+@Repository
 public class UserTakeActivityRepository implements IUserTakeActivityRepository {
     @Autowired
     private IUserTakeActivityService userTakeActivityService;

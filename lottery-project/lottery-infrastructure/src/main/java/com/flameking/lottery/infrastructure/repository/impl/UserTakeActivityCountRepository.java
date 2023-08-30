@@ -6,8 +6,9 @@ import com.flameking.lottery.infrastructure.entity.UserTakeActivityCount;
 import com.flameking.lottery.infrastructure.service.IUserTakeActivityCountService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Repository;
 
-@Component
+@Repository
 public class UserTakeActivityCountRepository implements IUserTakeActivityCountRepository {
     @Autowired
     private IUserTakeActivityCountService userTakeActivityCountService;
