@@ -31,6 +31,7 @@
         <swagger.starter.version>1.9.0.RELEASE</swagger.starter.version>
         <mysql.connect.version>8.0.18</mysql.connect.version>
         <dubbo.version>2.7.1</dubbo.version>
+        <kafka.version>2.8.0</kafka.version>
     </properties>
 
     <parent>
@@ -139,6 +140,13 @@
                 <artifactId>commons-lang3</artifactId>
                 <version>3.8</version>
             </dependency>
+
+            <dependency>
+                <groupId>org.springframework.kafka</groupId>
+                <artifactId>spring-kafka</artifactId>
+                <version>${kafka.version}</version>
+            </dependency>
+
         </dependencies>
     </dependencyManagement>
 
