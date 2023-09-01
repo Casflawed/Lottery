@@ -1,21 +1,16 @@
-package com.flameking.lottery.domain.rule.model.req;
-
-import lombok.AllArgsConstructor;
-import lombok.NoArgsConstructor;
+package com.flameking.lottery.rpc.req;
 
 import java.util.Map;
 
 /**
- * 决策物料
+ *  量化人群抽奖请求参数
  */
-@AllArgsConstructor
-@NoArgsConstructor
-public class DecisionMatterReq {
+public class QuantificationDrawReq {
 
+    /** 用户ID */
+    private String uId;
     /** 规则树ID */
     private Long treeId;
-    /** 用户ID */
-    private String userId;
     /** 决策值 */
     private Map<String, Object> valMap;
 
@@ -27,12 +22,12 @@ public class DecisionMatterReq {
         this.treeId = treeId;
     }
 
-    public String getUserId() {
-        return userId;
+    public String getuId() {
+        return uId;
     }
 
-    public void setUserId(String userId) {
-        this.userId = userId;
+    public void setuId(String uId) {
+        this.uId = uId;
     }
 
     public Map<String, Object> getValMap() {
