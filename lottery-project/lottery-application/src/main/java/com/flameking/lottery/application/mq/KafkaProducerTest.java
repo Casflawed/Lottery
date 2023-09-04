@@ -10,15 +10,13 @@ import org.springframework.stereotype.Component;
 import org.springframework.util.concurrent.ListenableFuture;
 import org.springframework.util.concurrent.ListenableFutureCallback;
 
-import javax.annotation.Resource;
-
 /**
  * 消息生产者
  */
 @Component
-public class KafkaProducer {
+public class KafkaProducerTest {
 
-    private Logger logger = LoggerFactory.getLogger(KafkaProducer.class);
+    private Logger logger = LoggerFactory.getLogger(KafkaProducerTest.class);
 
     @Autowired
     private KafkaTemplate<String, Object> kafkaTemplate;

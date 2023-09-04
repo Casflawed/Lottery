@@ -1,6 +1,5 @@
 package com.flameking.lottery.interfaces;
 
-import com.flameking.lottery.application.mq.KafkaProducer;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.slf4j.Logger;
@@ -9,19 +8,17 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import javax.annotation.Resource;
-
 /**
  * Kafka 消息测试
  */
 @RunWith(SpringRunner.class)
 @SpringBootTest
-public class KafkaProducerTest {
+public class KafkaProducerTestTest {
 
-    private Logger logger = LoggerFactory.getLogger(KafkaProducerTest.class);
+    private Logger logger = LoggerFactory.getLogger(KafkaProducerTestTest.class);
 
     @Autowired
-    private KafkaProducer kafkaProducer;
+    private com.flameking.lottery.application.mq.KafkaProducerTest kafkaProducer;
 
     @Test
     public void test_send() throws InterruptedException {

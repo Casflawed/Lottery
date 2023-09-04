@@ -5,6 +5,7 @@ import com.flameking.lottery.common.util.EntityUtils;
 import com.flameking.lottery.domain.activity.model.aggregates.PartakeReq;
 import com.flameking.lottery.domain.activity.model.vo.ActivityBillVO;
 import com.flameking.lottery.domain.activity.model.vo.DrawOrderVO;
+import com.flameking.lottery.domain.activity.model.vo.UserTakeActivityVO;
 import com.flameking.lottery.domain.activity.repository.IUserTakeActivityRepository;
 import com.flameking.lottery.infrastructure.entity.UserStrategyExport;
 import com.flameking.lottery.infrastructure.entity.UserTakeActivity;
@@ -57,6 +58,25 @@ public class UserTakeActivityRepository implements IUserTakeActivityRepository {
         UserStrategyExport export = new UserStrategyExport();
         EntityUtils.copyProperties(drawOrder, export);
         export.setUuid(String.valueOf(drawOrder.getOrderId()));
+        export.setMqState(Constants.MQState.INIT.getCode());
         userStrategyExportService.create(export);
+    }
+
+    @Override
+    public void updateInvoiceMqState(String uId, Long orderId, Integer mqState) {
+        boolean isSuccess = userStrategyExportService.updateInvoiceMqState(uId, orderId, mqState);
+    }
+
+    @Override
+    public UserTakeActivityVO queryNoConsumedTakeActivityOrder(Long activityId, String uId) {
+        UserTakeActivity noConsumedTakeActivityOrder = userTakeActivityService.queryNoConsumedTakeActivityOrder(activityId, uId);
+        if (noConsumedTakeActivityOrder == null){
+            return null;
+        }
+
+        UserTakeActivityVO userTakeActivityVO = new UserTakeActivityVO();
+        EntityUtils.copyProperties(noConsumedTakeActivityOrder, userTakeActivityVO);
+
+        return userTakeActivityVO;
     }
 }

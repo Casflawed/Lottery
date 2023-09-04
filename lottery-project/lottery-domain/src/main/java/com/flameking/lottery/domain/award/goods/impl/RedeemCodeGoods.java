@@ -20,7 +20,7 @@ public class RedeemCodeGoods extends AwardSenderBase implements ISendGoods {
         logger.info("模拟调用兑换码 uId：{} awardContent：{}", req.getUId(), req.getAwardContent());
 
         // 更新用户领奖结果
-        super.updateUserAwardState(req.getUId(), req.getOrderId(), req.getAwardId(), Constants.AwardState.SUCCESS.getCode(), Constants.AwardState.SUCCESS.getInfo());
+        super.updateUserAwardState(req.getUId(), req.getOrderId(), req.getAwardId(), Constants.GrantState.COMPLETE.getCode());
 
         return new AwardSenderRes(req.getUId(), Constants.AwardState.SUCCESS.getCode(), Constants.AwardState.SUCCESS.getInfo());
     }

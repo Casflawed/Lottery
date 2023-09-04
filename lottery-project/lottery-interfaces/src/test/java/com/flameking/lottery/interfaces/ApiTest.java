@@ -97,7 +97,7 @@ public class ApiTest {
     public void test_send() {
         Long strategyId = 1001L;
         Long uId = 1001L;
-        String orderId = "0001";
+        Long orderId = 3981247023891L;
         for (int i = 0; i < 100; i++){
             AwardSenderRes awardSenderRes = awardSenderTemplate.sendAward(String.valueOf(uId), strategyId, orderId);
             System.out.println(JSON.toJSONString(awardSenderRes));

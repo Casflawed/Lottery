@@ -1,5 +1,6 @@
 package com.flameking.lottery.application.process.impl;
 
+import com.flameking.lottery.application.mq.producer.KafkaProducer;
 import com.flameking.lottery.application.process.IActivityProcess;
 import com.flameking.lottery.application.process.req.DrawProcessReq;
 import com.flameking.lottery.application.process.res.DrawProcessResult;
@@ -9,6 +10,7 @@ import com.flameking.lottery.common.Result;
 import com.flameking.lottery.domain.activity.model.aggregates.PartakeReq;
 import com.flameking.lottery.domain.activity.model.res.PartakeResult;
 import com.flameking.lottery.domain.activity.model.vo.DrawOrderVO;
+import com.flameking.lottery.domain.activity.model.vo.InvoiceVO;
 import com.flameking.lottery.domain.activity.service.partake.IActivityPartake;
 import com.flameking.lottery.domain.ids.IIdGenerator;
 import com.flameking.lottery.domain.rule.model.req.DecisionMatterReq;
@@ -18,9 +20,14 @@ import com.flameking.lottery.domain.strategy.draw.IDrawTemplate;
 import com.flameking.lottery.domain.strategy.model.req.DrawReq;
 import com.flameking.lottery.domain.strategy.model.res.DrawResult;
 import com.flameking.lottery.domain.strategy.model.vo.DrawAwardInfo;
+import com.flameking.middleware.db.router.strategy.IDBRouterStrategy;
+import com.flameking.middleware.db.router.support.DataSourceContextHolder;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.kafka.support.SendResult;
 import org.springframework.stereotype.Component;
+import org.springframework.util.concurrent.ListenableFuture;
+import org.springframework.util.concurrent.ListenableFutureCallback;
 
 import javax.annotation.Resource;
 import java.util.Map;
@@ -36,8 +43,12 @@ public class ActivityProcessImpl implements IActivityProcess {
     private Map<Constants.Ids, IIdGenerator> idGeneratorMap;
     @Resource(name = "ruleEngineHandle")
     private EngineFilter engineFilter;
+    @Autowired
+    private KafkaProducer kafkaProducer;
+    @Autowired
+    private IDBRouterStrategy dbRouter;
 
-    public DrawProcessResult doDrawProcess(DrawProcessReq req){
+    public DrawProcessResult doDrawProcess(DrawProcessReq req) {
         // 领取活动
         PartakeResult partakeResult = activityPartake.doPartake(new PartakeReq(req.getUId(), req.getActivityId()));
         if (!Constants.ResponseCode.SUCCESS.getCode().equals(partakeResult.getCode())) {
@@ -54,9 +65,32 @@ public class ActivityProcessImpl implements IActivityProcess {
         DrawAwardInfo drawAwardInfo = drawResult.getDrawAwardInfo();
 
         // 抽奖信息落库、核销活动领取单
-        Result result = activityPartake.recordDrawOrder(buildDrawOrderVO(req, strategyId, takeId, drawAwardInfo));
+        DrawOrderVO drawOrderVO = buildDrawOrderVO(req, strategyId, takeId, drawAwardInfo);
+        Result recordResult = activityPartake.recordDrawOrder(drawOrderVO);
+        if (!Constants.ResponseCode.SUCCESS.getCode().equals(recordResult.getCode())) {
+            return new DrawProcessResult(recordResult.getCode(), recordResult.getInfo());
+        }
 
         // mq触发发奖流程
+        InvoiceVO invoiceVO = buildInvoiceVO(drawOrderVO);
+        dbRouter.doRouter(invoiceVO.getuId());
+        ListenableFuture<SendResult<String, Object>> future = kafkaProducer.sendLotteryInvoice(invoiceVO);
+        //由于整个mq处理过程是异步，两个线程不一样，所已两边都得设置数据库索引并且clear
+        future.addCallback(new ListenableFutureCallback<SendResult<String, Object>>() {
+
+            @Override
+            public void onSuccess(SendResult<String, Object> stringObjectSendResult) {
+                // 4.1 MQ 消息发送完成，更新数据库表 user_strategy_export.mq_state = 1
+                activityPartake.updateInvoiceMqState(invoiceVO.getuId(), invoiceVO.getOrderId(), Constants.MQState.COMPLETE.getCode());
+            }
+
+            @Override
+            public void onFailure(Throwable throwable) {
+                // 4.2 MQ 消息发送失败，更新数据库表 user_strategy_export.mq_state = 2 【等待定时任务扫码补偿MQ消息】
+                activityPartake.updateInvoiceMqState(invoiceVO.getuId(), invoiceVO.getOrderId(), Constants.MQState.FAIL.getCode());
+            }
+
+        });
 
         // 返回抽奖结果
         return new DrawProcessResult(Constants.ResponseCode.SUCCESS.getCode(), Constants.ResponseCode.SUCCESS.getInfo(), drawAwardInfo);
@@ -69,7 +103,7 @@ public class ActivityProcessImpl implements IActivityProcess {
         EngineResult engineResult = engineFilter.process(req);
 
         if (!engineResult.isSuccess()) {
-            return new RuleQuantificationCrowdResult(Constants.ResponseCode.RULE_ERR.getCode(),Constants.ResponseCode.RULE_ERR.getInfo());
+            return new RuleQuantificationCrowdResult(Constants.ResponseCode.RULE_ERR.getCode(), Constants.ResponseCode.RULE_ERR.getInfo());
         }
 
         // 2. 封装结果
@@ -96,6 +130,19 @@ public class ActivityProcessImpl implements IActivityProcess {
         drawOrderVO.setAwardName(drawAwardInfo.getAwardName());
         drawOrderVO.setAwardContent(drawAwardInfo.getAwardContent());
         return drawOrderVO;
+    }
+
+    private InvoiceVO buildInvoiceVO(DrawOrderVO drawOrderVO) {
+        InvoiceVO invoiceVO = new InvoiceVO();
+        invoiceVO.setuId(drawOrderVO.getUId());
+        invoiceVO.setOrderId(drawOrderVO.getOrderId());
+        invoiceVO.setAwardId(drawOrderVO.getAwardId());
+        invoiceVO.setAwardType(drawOrderVO.getAwardType());
+        invoiceVO.setAwardName(drawOrderVO.getAwardName());
+        invoiceVO.setAwardContent(drawOrderVO.getAwardContent());
+        invoiceVO.setShippingAddress(null);
+        invoiceVO.setExtInfo(null);
+        return invoiceVO;
     }
 
 

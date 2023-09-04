@@ -21,5 +21,6 @@ public interface IUserTakeActivityService extends IService<UserTakeActivity> {
 
      boolean del(String id);
 
+     UserTakeActivity queryNoConsumedTakeActivityOrder(Long activityId, String uId);
 }
 

@@ -1,5 +1,6 @@
 package com.flameking.lottery.infrastructure.service.impl;
 
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 
@@ -56,6 +57,14 @@ public class UserTakeActivityServiceImpl extends ServiceImpl<UserTakeActivityMap
     @Override
     public boolean del(String id) {
         return removeById(id);
+    }
+
+    @Override
+    @DBRouter
+    public UserTakeActivity queryNoConsumedTakeActivityOrder(Long activityId, String uId) {
+        return getOne(new LambdaQueryWrapper<UserTakeActivity>()
+                .eq(UserTakeActivity::getActivityId, activityId)
+                .eq(UserTakeActivity::getUId, uId));
     }
 
 }

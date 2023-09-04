@@ -56,6 +56,9 @@ public class UserStrategyExport {
     /** 防重ID */
     private String uuid;
 
+    /** 消息发送状态（0未发送、1发送成功、2发送失败） */
+    private Integer mqState;
+
     /**  */
     private LocalDateTime createTime;
 

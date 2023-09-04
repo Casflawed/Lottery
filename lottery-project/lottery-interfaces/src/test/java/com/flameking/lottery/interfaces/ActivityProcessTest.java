@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSON;
 import com.flameking.lottery.application.process.IActivityProcess;
 import com.flameking.lottery.application.process.req.DrawProcessReq;
 import com.flameking.lottery.application.process.res.DrawProcessResult;
+import com.flameking.middleware.db.router.support.DataSourceContextHolder;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.slf4j.Logger;
@@ -25,10 +26,9 @@ public class ActivityProcessTest {
     @Test
     public void test_doDrawProcess() {
         DrawProcessReq req = new DrawProcessReq();
-        req.setUId("fustack");
+        req.setUId("flameking");
         req.setActivityId(100001L);
         DrawProcessResult drawProcessResult = activityProcess.doDrawProcess(req);
-
         logger.info("请求入参：{}", JSON.toJSONString(req));
         logger.info("测试结果：{}", JSON.toJSONString(drawProcessResult));
     }

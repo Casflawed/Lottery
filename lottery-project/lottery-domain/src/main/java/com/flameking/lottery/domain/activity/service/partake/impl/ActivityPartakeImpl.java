@@ -5,6 +5,7 @@ import com.flameking.lottery.common.Result;
 import com.flameking.lottery.domain.activity.model.aggregates.PartakeReq;
 import com.flameking.lottery.domain.activity.model.vo.ActivityBillVO;
 import com.flameking.lottery.domain.activity.model.vo.DrawOrderVO;
+import com.flameking.lottery.domain.activity.model.vo.UserTakeActivityVO;
 import com.flameking.lottery.domain.activity.repository.IActivityRepository;
 import com.flameking.lottery.domain.activity.repository.IUserTakeActivityCountRepository;
 import com.flameking.lottery.domain.activity.repository.IUserTakeActivityRepository;
@@ -132,6 +133,16 @@ public class ActivityPartakeImpl extends BaseActivityPartake {
             DataSourceContextHolder.clear();
         }
 
+    }
+
+    @Override
+    protected UserTakeActivityVO queryNoConsumedTakeActivityOrder(Long activityId, String uId) {
+        return userTakeActivityRepository.queryNoConsumedTakeActivityOrder(activityId, uId);
+    }
+
+    @Override
+    public void updateInvoiceMqState(String uId, Long orderId, Integer mqState) {
+        userTakeActivityRepository.updateInvoiceMqState(uId, orderId, mqState);
     }
 
 }

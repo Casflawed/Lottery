@@ -14,13 +14,30 @@ public interface IUserStrategyExportService extends IService<UserStrategyExport>
 //     IPage<UserStrategyExport> getPage(UserStrategyExport001Query query);
 
 
-     UserStrategyExport findById(Long id);
+    UserStrategyExport findById(Long id);
 
-     Long create(UserStrategyExport userStrategyExport);
+    Long create(UserStrategyExport userStrategyExport);
 
-     boolean update(UserStrategyExport userStrategyExport);
+    boolean update(UserStrategyExport userStrategyExport);
 
-     boolean del(String id);
+    boolean del(String id);
+
+    /**
+     * 更新发货单MQ状态
+     *
+     * @param uId     用户ID
+     * @param orderId 订单ID
+     * @param mqState MQ 发送状态
+     * @return
+     */
+    boolean updateInvoiceMqState(String uId, Long orderId, Integer mqState);
+
+     /**
+      * 更新发奖状态
+      *
+      * @return
+      */
+     boolean updateUserAwardState(String uId, Long orderId, Long awardId, Integer grantState);
 
 }
 
