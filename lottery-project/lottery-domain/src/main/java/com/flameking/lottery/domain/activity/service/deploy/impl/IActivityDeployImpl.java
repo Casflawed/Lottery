@@ -47,4 +47,9 @@ public class IActivityDeployImpl implements IActivityDeploy {
             throw e;
         }
     }
+
+    @Override
+    public List<ActivityVO> scanToDoActivityList(Long id) {
+        return activityRepository.scanToDoActivityList(id);
+    }
 }

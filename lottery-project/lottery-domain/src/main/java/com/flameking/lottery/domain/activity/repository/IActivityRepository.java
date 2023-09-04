@@ -38,4 +38,12 @@ public interface IActivityRepository {
      * @return 扣减结果
      */
     boolean subtractionActivityStock(Long activityId);
+
+    /**
+     * 扫描待处理的活动列表，状态为：通过、运行中
+     *
+     * @param id ID
+     * @return 待处理的活动集合
+     */
+    List<ActivityVO> scanToDoActivityList(Long id);
 }

@@ -5,6 +5,8 @@ import com.baomidou.mybatisplus.extension.service.IService;
 import com.flameking.lottery.common.Constants;
 import com.flameking.lottery.infrastructure.entity.Activity;
 
+import java.util.List;
+
 public interface IActivityService extends IService<Activity> {
 
     /**
@@ -19,4 +21,12 @@ public interface IActivityService extends IService<Activity> {
     Activity queryActivityById(Long activityId);
 
     boolean subtractionActivityStock(Long activityId);
+
+    /**
+     * 扫描待处理的活动列表，状态为：通过、运行中
+     *
+     * @param id ID
+     * @return 待处理的活动集合
+     */
+    List<Activity> scanToDoActivityList(Long id);
 }

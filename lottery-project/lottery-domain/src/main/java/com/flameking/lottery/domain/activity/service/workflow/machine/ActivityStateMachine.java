@@ -1,6 +1,7 @@
 package com.flameking.lottery.domain.activity.service.workflow.machine;
 
 import com.flameking.lottery.common.Constants;
+import com.flameking.lottery.common.Result;
 import com.flameking.lottery.domain.activity.repository.IActivityRepository;
 import com.flameking.lottery.domain.activity.service.workflow.state.IActivityState;
 import lombok.Setter;
@@ -23,7 +24,7 @@ public class ActivityStateMachine {
     /**
      * 编辑
      */
-    public boolean doEdit(Long activityId) {
+    public Result doEdit(Long activityId) {
         Assert.notNull(activityState, "activityState为null");
         //获取当前状态
         Constants.ActivityState currentState = activityState.getName();
@@ -32,13 +33,15 @@ public class ActivityStateMachine {
         activityState.doEdit(this);
 
         //更新后动状态
-        return activityRepository.alterStatus(activityId, currentState, activityState.getName());
+        boolean isSuccess = activityRepository.alterStatus(activityId, currentState, activityState.getName());
+
+        return isSuccess ? Result.buildResult(Constants.ResponseCode.SUCCESS, "活动变更编辑完成") : Result.buildErrorResult("活动状态变更失败");
     }
 
     /**
      * 提审
      */
-    public boolean doArraignment(Long activityId) {
+    public Result doArraignment(Long activityId) {
         Assert.notNull(activityState, "activityState为null");
 
         //获取当前状态
@@ -46,15 +49,17 @@ public class ActivityStateMachine {
 
         //转换状态
         activityState.doArraignment(this);
-
         //更新后动状态
-        return activityRepository.alterStatus(activityId, currentState, activityState.getName());
+        boolean isSuccess = activityRepository.alterStatus(activityId, currentState, activityState.getName());
+
+        return isSuccess ? Result.buildResult(Constants.ResponseCode.SUCCESS, "活动变更提审完成") : Result.buildErrorResult("活动状态变更失败");
+
     }
 
     /**
      * 撤审
      */
-    public boolean doRevoke(Long activityId) {
+    public Result doRevoke(Long activityId) {
         Assert.notNull(activityState, "activityState为null");
 
         //获取当前状态
@@ -64,13 +69,16 @@ public class ActivityStateMachine {
         activityState.doRevoke(this);
 
         //更新后动状态
-        return activityRepository.alterStatus(activityId, currentState, activityState.getName());
+        boolean isSuccess = activityRepository.alterStatus(activityId, currentState, activityState.getName());
+
+        return isSuccess ? Result.buildResult(Constants.ResponseCode.SUCCESS, "活动变更撤审完成") : Result.buildErrorResult("活动状态变更失败");
+
     }
 
     /**
      * 通过
      */
-    public boolean doPass(Long activityId) {
+    public Result doPass(Long activityId) {
         Assert.notNull(activityState, "activityState为null");
 
         //获取当前状态
@@ -81,13 +89,16 @@ public class ActivityStateMachine {
 
 
         //更新后动状态
-        return activityRepository.alterStatus(activityId, currentState, activityState.getName());
+        boolean isSuccess = activityRepository.alterStatus(activityId, currentState, activityState.getName());
+
+        return isSuccess ? Result.buildResult(Constants.ResponseCode.SUCCESS, "活动变更通过完成") : Result.buildErrorResult("活动状态变更失败");
+
     }
 
     /**
      * 运行中
      */
-    public boolean doDoing(Long activityId) {
+    public Result doDoing(Long activityId) {
         Assert.notNull(activityState, "activityState为null");
 
         //获取当前状态
@@ -97,13 +108,16 @@ public class ActivityStateMachine {
         activityState.doDoing(this);
 
         //更新后动状态
-        return activityRepository.alterStatus(activityId, currentState, activityState.getName());
+        boolean isSuccess = activityRepository.alterStatus(activityId, currentState, activityState.getName());
+
+        return isSuccess ? Result.buildResult(Constants.ResponseCode.SUCCESS, "活动变更运行中完成") : Result.buildErrorResult("活动状态变更失败");
+
     }
 
     /**
      * 拒绝
      */
-    public boolean doRefuse(Long activityId) {
+    public Result doRefuse(Long activityId) {
         Assert.notNull(activityState, "activityState为null");
 
         //获取当前状态
@@ -113,13 +127,16 @@ public class ActivityStateMachine {
         activityState.doRefuse(this);
 
         //更新后动状态
-        return activityRepository.alterStatus(activityId, currentState, activityState.getName());
+        boolean isSuccess = activityRepository.alterStatus(activityId, currentState, activityState.getName());
+
+        return isSuccess ? Result.buildResult(Constants.ResponseCode.SUCCESS, "活动变更拒绝完成") : Result.buildErrorResult("活动状态变更失败");
+
     }
 
     /**
      * 关闭
      */
-    public boolean doClose(Long activityId) {
+    public Result doClose(Long activityId) {
         Assert.notNull(activityState, "activityState为null");
 
         //获取当前状态
@@ -129,13 +146,16 @@ public class ActivityStateMachine {
         activityState.doClose(this);
 
         //更新后动状态
-        return activityRepository.alterStatus(activityId, currentState, activityState.getName());
+        boolean isSuccess = activityRepository.alterStatus(activityId, currentState, activityState.getName());
+
+        return isSuccess ? Result.buildResult(Constants.ResponseCode.SUCCESS, "活动变更关闭完成") : Result.buildErrorResult("活动状态变更失败");
+
     }
 
     /**
      * 开启
      */
-    public boolean doOpen(Long activityId) {
+    public Result doOpen(Long activityId) {
         Assert.notNull(activityState, "activityState为null");
 
         //获取当前状态
@@ -145,6 +165,9 @@ public class ActivityStateMachine {
         activityState.doOpen(this);
 
         //更新后动状态
-        return activityRepository.alterStatus(activityId, currentState, activityState.getName());
+        boolean isSuccess = activityRepository.alterStatus(activityId, currentState, activityState.getName());
+
+        return isSuccess ? Result.buildResult(Constants.ResponseCode.SUCCESS, "活动变更开启完成") : Result.buildErrorResult("活动状态变更失败");
+
     }
 }

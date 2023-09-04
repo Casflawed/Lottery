@@ -10,6 +10,8 @@ import com.flameking.lottery.infrastructure.mapper.ActivityMapper;
 import com.flameking.lottery.infrastructure.service.IActivityService;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 /**
  * 活动配置服务层实现类
  *
@@ -42,5 +44,16 @@ public class ActivityServiceImpl extends ServiceImpl<ActivityMapper, Activity> i
                 .eq(Activity::getActivityId, activityId)
                 .gt(Activity::getStockSurplusCount, 0);
         return update(updateWrapper);
+    }
+
+    @Override
+    public List<Activity> scanToDoActivityList(Long id) {
+        return list(new LambdaQueryWrapper<Activity>()
+                .ge(Activity::getId, id)
+                .in(Activity::getState, Constants.ActivityState.PASS.getCode(), Constants.ActivityState.DOING.getCode())
+                .orderByAsc(Activity::getId)
+                // TODO: 2023/9/4 limit10存在一个问题，即数据库中是否存在data-n < data-10，
+                //  按理数据库剩余的数据 data-x >= data-10，如果不是这样，数据库的某些数据这个方法永远扫描不到
+                .last("LIMIT 10"));
     }
 }

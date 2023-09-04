@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Repository;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Repository
@@ -86,5 +87,11 @@ public class ActivityRepositoryImpl implements IActivityRepository {
     @Override
     public boolean subtractionActivityStock(Long activityId) {
         return activityService.subtractionActivityStock(activityId);
+    }
+
+    @Override
+    public List<ActivityVO> scanToDoActivityList(Long id) {
+        List<Activity> activityList = activityService.scanToDoActivityList(id);
+        return EntityUtils.toList(activityList, ActivityVO::new);
     }
 }
