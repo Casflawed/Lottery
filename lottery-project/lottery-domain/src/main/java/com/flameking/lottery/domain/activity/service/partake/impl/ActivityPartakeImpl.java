@@ -5,6 +5,7 @@ import com.flameking.lottery.common.Result;
 import com.flameking.lottery.domain.activity.model.aggregates.PartakeReq;
 import com.flameking.lottery.domain.activity.model.vo.ActivityBillVO;
 import com.flameking.lottery.domain.activity.model.vo.DrawOrderVO;
+import com.flameking.lottery.domain.activity.model.vo.InvoiceVO;
 import com.flameking.lottery.domain.activity.model.vo.UserTakeActivityVO;
 import com.flameking.lottery.domain.activity.repository.IActivityRepository;
 import com.flameking.lottery.domain.activity.repository.IUserTakeActivityCountRepository;
@@ -17,6 +18,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.support.TransactionTemplate;
+
+import java.util.List;
 
 @Slf4j
 @Component
@@ -145,4 +148,17 @@ public class ActivityPartakeImpl extends BaseActivityPartake {
         userTakeActivityRepository.updateInvoiceMqState(uId, orderId, mqState);
     }
 
+    @Override
+    public List<InvoiceVO> scanInvoiceMqState(int dbCount, int tbCount) {
+        try {
+            // 设置路由
+            dbRouter.setDbKey(dbCount);
+            dbRouter.setTbKey(tbCount);
+
+            // 查询数据
+            return userTakeActivityRepository.scanInvoiceMqState();
+        } finally {
+            DataSourceContextHolder.clear();
+        }
+    }
 }

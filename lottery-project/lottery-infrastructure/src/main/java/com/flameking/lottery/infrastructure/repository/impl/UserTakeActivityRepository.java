@@ -5,6 +5,7 @@ import com.flameking.lottery.common.util.EntityUtils;
 import com.flameking.lottery.domain.activity.model.aggregates.PartakeReq;
 import com.flameking.lottery.domain.activity.model.vo.ActivityBillVO;
 import com.flameking.lottery.domain.activity.model.vo.DrawOrderVO;
+import com.flameking.lottery.domain.activity.model.vo.InvoiceVO;
 import com.flameking.lottery.domain.activity.model.vo.UserTakeActivityVO;
 import com.flameking.lottery.domain.activity.repository.IUserTakeActivityRepository;
 import com.flameking.lottery.infrastructure.entity.UserStrategyExport;
@@ -14,6 +15,9 @@ import com.flameking.lottery.infrastructure.service.IUserTakeActivityService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Repository;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Repository
 public class UserTakeActivityRepository implements IUserTakeActivityRepository {
@@ -78,5 +82,13 @@ public class UserTakeActivityRepository implements IUserTakeActivityRepository {
         EntityUtils.copyProperties(noConsumedTakeActivityOrder, userTakeActivityVO);
 
         return userTakeActivityVO;
+    }
+
+    @Override
+    public List<InvoiceVO> scanInvoiceMqState() {
+        // 查询发送MQ失败和超时30分钟，未发送MQ的数据
+        List<UserStrategyExport> userStrategyExportList = userStrategyExportService.scanInvoiceMqState();
+        // 转换对象
+        return EntityUtils.toList(userStrategyExportList, InvoiceVO::new);
     }
 }

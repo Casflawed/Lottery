@@ -19,6 +19,8 @@ import org.springframework.stereotype.Component;
 public class AwardSenderTemplateImpl implements IAwardSenderTemplate {
     @Autowired
     private IDrawTemplate drawTemplate;
+    @Autowired
+    private SendGoodsFactory goodsFactory;
 
     @Override
     public AwardSenderRes sendAward(String uId, Long strategyId, Long orderId) {
@@ -33,7 +35,7 @@ public class AwardSenderTemplateImpl implements IAwardSenderTemplate {
 
         //根据奖品类型执行不同的发奖（配送）方式
         Integer awardType = drawAwardInfo.getAwardType();
-        ISendGoods sendGoods = SendGoodsFactory.getSendGoods(awardType);
+        ISendGoods sendGoods = goodsFactory.getSendGoods(awardType);
 
         //orderId 使用用户参与活动时生成
         GoodsReq req = new GoodsReq(uId, orderId, drawAwardInfo.getAwardId(), drawAwardInfo.getAwardName(), drawAwardInfo.getAwardContent());

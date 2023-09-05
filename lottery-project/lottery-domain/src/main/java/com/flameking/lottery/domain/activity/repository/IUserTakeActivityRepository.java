@@ -3,7 +3,10 @@ package com.flameking.lottery.domain.activity.repository;
 import com.flameking.lottery.domain.activity.model.aggregates.PartakeReq;
 import com.flameking.lottery.domain.activity.model.vo.ActivityBillVO;
 import com.flameking.lottery.domain.activity.model.vo.DrawOrderVO;
+import com.flameking.lottery.domain.activity.model.vo.InvoiceVO;
 import com.flameking.lottery.domain.activity.model.vo.UserTakeActivityVO;
+
+import java.util.List;
 
 public interface IUserTakeActivityRepository {
     boolean takeActivity(PartakeReq partake, ActivityBillVO bill, Long takeId);
@@ -29,5 +32,12 @@ public interface IUserTakeActivityRepository {
      * @return 领取单
      */
     UserTakeActivityVO queryNoConsumedTakeActivityOrder(Long activityId, String uId);
+
+    /**
+     * 扫描发货单 MQ 状态，把超时30分钟未发送 MQ 和发送 MQ 失败的单子扫描出来，做补偿
+     *
+     * @return 发货单
+     */
+    List<InvoiceVO> scanInvoiceMqState();
 
 }

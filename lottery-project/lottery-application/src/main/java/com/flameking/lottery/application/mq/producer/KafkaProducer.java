@@ -29,7 +29,7 @@ public class KafkaProducer {
      * 创建topic：bin/kafka-topics.sh --create --zookeeper localhost:2181 --replication-factor 1 --partitions 1 --topic lottery_invoice
      *
      * windows
-     * 启动zk：D:\environment\kafka_2.12-3.5.1>bin\windows\zookeeper-server-start.bat -daemon config/zookeeper.properties
+     * 启动zk：D:\environment\kafka_2.12-3.5.1>bin\windows\zookeeper-server-start.bat config/zookeeper.properties
      * 启动kafaka：D:\environment\kafka_2.12-3.5.1>bin\windows\kafka-server-start.bat config/server.properties
      * 创建topic：bin\windows\kafka-topics.bat --create --bootstrap-server localhost:9092 --replication-factor 1 --partitions 1 --topic lottery_invoice
      */

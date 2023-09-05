@@ -31,6 +31,8 @@ public class LotteryInvoiceListener {
 
     @Autowired
     private IDBRouterStrategy dbRouter;
+    @Autowired
+    private SendGoodsFactory goodsFactory;
 
     @KafkaListener(topics = "lottery_invoice", groupId = "lottery")
     public void onMessage(ConsumerRecord<?, ?> record, Acknowledgment ack, @Header(KafkaHeaders.RECEIVED_TOPIC) String topic) {
@@ -47,9 +49,9 @@ public class LotteryInvoiceListener {
             InvoiceVO invoiceVO = JSON.parseObject((String) message.get(), InvoiceVO.class);
             dbRouter.doRouter(invoiceVO.getuId());
             // 2. 获取发送奖品工厂，执行发奖
-            ISendGoods distributionGoodsService = SendGoodsFactory.getSendGoods(invoiceVO.getAwardType());
+            ISendGoods distributionGoodsService = goodsFactory.getSendGoods(invoiceVO.getAwardType());
             AwardSenderRes distributionRes = distributionGoodsService.doSend(new GoodsReq(invoiceVO.getuId(), invoiceVO.getOrderId(), invoiceVO.getAwardId(), invoiceVO.getAwardName(), invoiceVO.getAwardContent()));
-
+            // TODO: 2023/9/4 如果为false，ack.acknowledge没有执行，那么消费这会走哪个方法呢？或者根本不会走消费者方法
             Assert.isTrue(Constants.AwardState.SUCCESS.getCode().equals(distributionRes.getCode()), distributionRes.getInfo());
 
             // 3. 打印日志

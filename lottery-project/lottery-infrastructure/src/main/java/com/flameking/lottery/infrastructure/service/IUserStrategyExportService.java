@@ -3,6 +3,8 @@ package com.flameking.lottery.infrastructure.service;
 import com.flameking.lottery.infrastructure.entity.UserStrategyExport;
 import com.baomidou.mybatisplus.extension.service.IService;
 
+import java.util.List;
+
 /**
  * 用户策略计算结果服务层接口
  *
@@ -32,12 +34,18 @@ public interface IUserStrategyExportService extends IService<UserStrategyExport>
      */
     boolean updateInvoiceMqState(String uId, Long orderId, Integer mqState);
 
-     /**
-      * 更新发奖状态
-      *
-      * @return
-      */
-     boolean updateUserAwardState(String uId, Long orderId, Long awardId, Integer grantState);
+    /**
+     * 更新发奖状态
+     *
+     * @return
+     */
+    boolean updateUserAwardState(String uId, Long orderId, Long awardId, Integer grantState);
 
+    /**
+     * 扫描发货单 MQ 状态，把超时30分钟未发送 MQ 和发送 MQ 失败的单子扫描出来，做补偿
+     *
+     * @return 发货单
+     */
+    List<UserStrategyExport> scanInvoiceMqState();
 }
 

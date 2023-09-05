@@ -16,7 +16,7 @@ public class DescGoods extends AwardSenderBase implements ISendGoods {
     @Override
     public AwardSenderRes doSend(GoodsReq req) {
 
-        super.updateUserAwardState(req.getUId(), req.getOrderId(), req.getAwardId(), Constants.GrantState.COMPLETE.getCode());
+        this.updateUserAwardState(req.getUId(), req.getOrderId(), req.getAwardId(), Constants.GrantState.COMPLETE.getCode());
 
         return new AwardSenderRes(req.getUId(), Constants.AwardState.SUCCESS.getCode(), Constants.AwardState.SUCCESS.getInfo());
     }

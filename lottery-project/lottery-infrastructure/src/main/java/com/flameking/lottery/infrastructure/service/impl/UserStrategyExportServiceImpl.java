@@ -1,8 +1,10 @@
 package com.flameking.lottery.infrastructure.service.impl;
 
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 
+import com.flameking.lottery.common.Constants;
 import com.flameking.lottery.infrastructure.entity.UserStrategyExport;
 import javax.annotation.Resource;
 
@@ -12,6 +14,7 @@ import com.flameking.middleware.db.router.annotation.DBRouter;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
+import java.util.List;
 
 
 /**
@@ -75,6 +78,14 @@ public class UserStrategyExportServiceImpl extends ServiceImpl<UserStrategyExpor
                 .set(UserStrategyExport::getGrantState, grantState)
                 .set(UserStrategyExport::getGrantDate, new Date())
                 .set(UserStrategyExport::getUpdateTime, new Date()));
+    }
+
+    @Override
+    public List<UserStrategyExport> scanInvoiceMqState() {
+        return list(new LambdaQueryWrapper<UserStrategyExport>()
+                .eq(UserStrategyExport::getMqState, Constants.MQState.FAIL.getCode())
+                .or(i -> i.eq(UserStrategyExport::getMqState, 0)
+                        .apply("now() - create_time > 1800000")));
     }
 
 }
