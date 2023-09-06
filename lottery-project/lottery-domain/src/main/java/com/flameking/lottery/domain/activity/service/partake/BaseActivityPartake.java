@@ -4,6 +4,7 @@ import com.flameking.lottery.common.Constants;
 import com.flameking.lottery.common.Result;
 import com.flameking.lottery.domain.activity.model.aggregates.PartakeReq;
 import com.flameking.lottery.domain.activity.model.res.PartakeResult;
+import com.flameking.lottery.domain.activity.model.res.StockResult;
 import com.flameking.lottery.domain.activity.model.vo.ActivityBillVO;
 import com.flameking.lottery.domain.activity.model.vo.UserTakeActivityVO;
 import com.flameking.lottery.domain.ids.IIdGenerator;
@@ -35,22 +36,48 @@ public abstract class BaseActivityPartake implements IActivityPartake {
             return new PartakeResult(checkResult.getCode(), checkResult.getInfo());
         }
         //扣减活动剩余参与次数
-        Result subtractionActivityResult = subtractionActivityStock(req);
+        StockResult subtractionActivityResult = this.subtractionActivityStock(req.getUId(), req.getActivityId(), activityBillVO.getStockCount());
+
+//        Result subtractionActivityResult = subtractionActivityStock(req);
         if (!Constants.ResponseCode.SUCCESS.getCode().equals(subtractionActivityResult.getCode())) {
+            this.recoverActivityCacheStockByRedis(req.getActivityId(), subtractionActivityResult.getStockKey(), subtractionActivityResult.getCode());
             return new PartakeResult(subtractionActivityResult.getCode(), subtractionActivityResult.getInfo());
         }
+
         //更新or插入用户参与次数信息
         Long takeId = idGeneratorMap.get(Constants.Ids.SnowFlake).nextId();
         Result grabResult = grabActivity(req, activityBillVO, takeId);
         if (!Constants.ResponseCode.SUCCESS.getCode().equals(grabResult.getCode())) {
+            this.recoverActivityCacheStockByRedis(req.getActivityId(), subtractionActivityResult.getStockKey(), grabResult.getCode());
             return new PartakeResult(grabResult.getCode(), grabResult.getInfo());
         }
+
+        // 6. 扣减活动库存，通过Redis End
+        this.recoverActivityCacheStockByRedis(req.getActivityId(), subtractionActivityResult.getStockKey(), Constants.ResponseCode.SUCCESS.getCode());
 
         //查询用户参与活动信息
         return new PartakeResult(Constants.ResponseCode.SUCCESS.getCode(),
                 Constants.ResponseCode.SUCCESS.getInfo(),
                 activityBillVO.getStrategyId(), takeId);
     }
+    /**
+     * 恢复活动库存，通过Redis 【如果非常异常，则需要进行缓存库存恢复，只保证不超卖的特性，所以不保证一定能恢复占用库存，另外最终可以由任务进行补偿库存】
+     *
+     * @param activityId 活动ID
+     * @param tokenKey   分布式 KEY 用于清理
+     * @param code       状态
+     */
+    protected abstract void recoverActivityCacheStockByRedis(Long activityId, String tokenKey, String code);
+
+    /**
+     * 扣减活动库存，通过Redis
+     *
+     * @param uId        用户ID
+     * @param activityId 活动号
+     * @param stockCount 总库存
+     * @return 扣减结果
+     */
+    protected abstract StockResult subtractionActivityStock(String uId, Long activityId, Integer stockCount);
 
     /**
      * 封装结果【返回的策略ID，用于继续完成抽奖步骤】

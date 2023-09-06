@@ -47,6 +47,14 @@ public class ActivityServiceImpl extends ServiceImpl<ActivityMapper, Activity> i
     }
 
     @Override
+    public boolean updateActivityStock(Activity activity) {
+        return update(new LambdaUpdateWrapper<Activity>()
+                .set(Activity::getStockSurplusCount, activity.getStockSurplusCount())
+                .eq(Activity::getActivityId, activity.getActivityId())
+                .gt(Activity::getStockSurplusCount, activity.getStockSurplusCount()));
+    }
+
+    @Override
     public List<Activity> scanToDoActivityList(Long id) {
         return list(new LambdaQueryWrapper<Activity>()
                 .ge(Activity::getId, id)

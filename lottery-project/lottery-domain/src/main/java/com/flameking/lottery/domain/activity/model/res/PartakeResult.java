@@ -21,6 +21,12 @@ public class PartakeResult extends Result {
      */
     private Long takeId;
 
+    /** 库存 */
+    private Integer stockCount;
+
+    /** activity 库存剩余 */
+    private Integer stockSurplusCount;
+
     public PartakeResult(String code, String info) {
         super(code, info);
     }

@@ -35,6 +35,8 @@ public class ActivityBillVO {
      * 库存剩余
      */
     private Integer stockSurplusCount;
+    /** 库存 */
+    private Integer stockCount;
     /**
      * 活动状态：1编辑、2提审、3撤审、4通过、5运行(审核通过后worker扫描状态)、6拒绝、7关闭、8开启
      * Constants.ActivityState

@@ -29,4 +29,12 @@ public interface IActivityService extends IService<Activity> {
      * @return 待处理的活动集合
      */
     List<Activity> scanToDoActivityList(Long id);
+
+    /**
+     * 更新用户领取活动后，活动库存
+     *
+     * @param activity  入参
+     */
+    boolean updateActivityStock(Activity activity);
+
 }

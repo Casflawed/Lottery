@@ -3,6 +3,7 @@ package com.flameking.lottery.domain.activity.service.partake;
 import com.flameking.lottery.common.Result;
 import com.flameking.lottery.domain.activity.model.aggregates.PartakeReq;
 import com.flameking.lottery.domain.activity.model.res.PartakeResult;
+import com.flameking.lottery.domain.activity.model.vo.ActivityPartakeRecordVO;
 import com.flameking.lottery.domain.activity.model.vo.DrawOrderVO;
 import com.flameking.lottery.domain.activity.model.vo.InvoiceVO;
 import com.flameking.lottery.domain.activity.model.vo.UserTakeActivityVO;
@@ -37,4 +38,12 @@ public interface IActivityPartake {
      * @return 发货单
      */
     List<InvoiceVO> scanInvoiceMqState(int dbCount, int tbCount);
+
+    /**
+     * 更新活动库存
+     *
+     * @param activityPartakeRecordVO   活动领取记录
+     */
+    boolean updateActivityStock(ActivityPartakeRecordVO activityPartakeRecordVO);
+
 }

@@ -3,10 +3,8 @@ package com.flameking.lottery.domain.activity.service.partake.impl;
 import com.flameking.lottery.common.Constants;
 import com.flameking.lottery.common.Result;
 import com.flameking.lottery.domain.activity.model.aggregates.PartakeReq;
-import com.flameking.lottery.domain.activity.model.vo.ActivityBillVO;
-import com.flameking.lottery.domain.activity.model.vo.DrawOrderVO;
-import com.flameking.lottery.domain.activity.model.vo.InvoiceVO;
-import com.flameking.lottery.domain.activity.model.vo.UserTakeActivityVO;
+import com.flameking.lottery.domain.activity.model.res.StockResult;
+import com.flameking.lottery.domain.activity.model.vo.*;
 import com.flameking.lottery.domain.activity.repository.IActivityRepository;
 import com.flameking.lottery.domain.activity.repository.IUserTakeActivityCountRepository;
 import com.flameking.lottery.domain.activity.repository.IUserTakeActivityRepository;
@@ -34,6 +32,16 @@ public class ActivityPartakeImpl extends BaseActivityPartake {
     private IUserTakeActivityCountRepository userTakeActivityCountRepository;
     @Autowired
     private IUserTakeActivityRepository userTakeActivityRepository;
+
+    @Override
+    protected void recoverActivityCacheStockByRedis(Long activityId, String tokenKey, String code) {
+        activityRepository.recoverActivityCacheStockByRedis(activityId, tokenKey, code);
+    }
+
+    @Override
+    protected StockResult subtractionActivityStock(String uId, Long activityId, Integer stockCount){
+        return activityRepository.subtractionActivityStockByRedis(uId, activityId, stockCount);
+    }
 
     @Override
     protected Result subtractionActivityStock(PartakeReq req) {
@@ -148,6 +156,10 @@ public class ActivityPartakeImpl extends BaseActivityPartake {
         userTakeActivityRepository.updateInvoiceMqState(uId, orderId, mqState);
     }
 
+    @Override
+    public boolean updateActivityStock(ActivityPartakeRecordVO activityPartakeRecordVO) {
+        return userTakeActivityRepository.updateActivityStock(activityPartakeRecordVO);
+    }
     @Override
     public List<InvoiceVO> scanInvoiceMqState(int dbCount, int tbCount) {
         try {

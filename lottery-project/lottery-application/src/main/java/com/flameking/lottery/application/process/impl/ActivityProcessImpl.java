@@ -9,6 +9,7 @@ import com.flameking.lottery.common.Constants;
 import com.flameking.lottery.common.Result;
 import com.flameking.lottery.domain.activity.model.aggregates.PartakeReq;
 import com.flameking.lottery.domain.activity.model.res.PartakeResult;
+import com.flameking.lottery.domain.activity.model.vo.ActivityPartakeRecordVO;
 import com.flameking.lottery.domain.activity.model.vo.DrawOrderVO;
 import com.flameking.lottery.domain.activity.model.vo.InvoiceVO;
 import com.flameking.lottery.domain.activity.service.partake.IActivityPartake;
@@ -55,9 +56,21 @@ public class ActivityProcessImpl implements IActivityProcess {
             return new DrawProcessResult(partakeResult.getCode(), partakeResult.getInfo());
         }
 
+        // 2. 首次成功领取活动，发送 MQ 消息
+        if (Constants.ResponseCode.SUCCESS.getCode().equals(partakeResult.getCode())) {
+            ActivityPartakeRecordVO activityPartakeRecord = new ActivityPartakeRecordVO();
+            activityPartakeRecord.setuId(req.getUId());
+            activityPartakeRecord.setActivityId(req.getActivityId());
+            activityPartakeRecord.setStockCount(partakeResult.getStockCount());
+            activityPartakeRecord.setStockSurplusCount(partakeResult.getStockSurplusCount());
+            // 发送 MQ 消息
+            kafkaProducer.sendLotteryActivityPartakeRecord(activityPartakeRecord);
+        }
+
         // 抽奖
         Long strategyId = partakeResult.getStrategyId();
         Long takeId = partakeResult.getTakeId();
+
         DrawResult drawResult = drawTemplate.doDraw(new DrawReq(req.getUId(), strategyId, takeId));
         if (Constants.DrawState.FAIL.getCode().equals(drawResult.getDrawState())) {
             return new DrawProcessResult(Constants.ResponseCode.LOSING_DRAW.getCode(), Constants.ResponseCode.LOSING_DRAW.getInfo());

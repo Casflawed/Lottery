@@ -1,10 +1,7 @@
 package com.flameking.lottery.domain.activity.repository;
 
 import com.flameking.lottery.domain.activity.model.aggregates.PartakeReq;
-import com.flameking.lottery.domain.activity.model.vo.ActivityBillVO;
-import com.flameking.lottery.domain.activity.model.vo.DrawOrderVO;
-import com.flameking.lottery.domain.activity.model.vo.InvoiceVO;
-import com.flameking.lottery.domain.activity.model.vo.UserTakeActivityVO;
+import com.flameking.lottery.domain.activity.model.vo.*;
 
 import java.util.List;
 
@@ -39,5 +36,10 @@ public interface IUserTakeActivityRepository {
      * @return 发货单
      */
     List<InvoiceVO> scanInvoiceMqState();
-
+    /**
+     * 更新活动库存
+     *
+     * @param activityPartakeRecordVO   活动领取记录
+     */
+    boolean updateActivityStock(ActivityPartakeRecordVO activityPartakeRecordVO);
 }

@@ -3,13 +3,13 @@ package com.flameking.lottery.infrastructure.repository.impl;
 import com.flameking.lottery.common.Constants;
 import com.flameking.lottery.common.util.EntityUtils;
 import com.flameking.lottery.domain.activity.model.aggregates.PartakeReq;
-import com.flameking.lottery.domain.activity.model.vo.ActivityBillVO;
-import com.flameking.lottery.domain.activity.model.vo.DrawOrderVO;
-import com.flameking.lottery.domain.activity.model.vo.InvoiceVO;
-import com.flameking.lottery.domain.activity.model.vo.UserTakeActivityVO;
+import com.flameking.lottery.domain.activity.model.vo.*;
 import com.flameking.lottery.domain.activity.repository.IUserTakeActivityRepository;
+import com.flameking.lottery.domain.activity.service.partake.IActivityPartake;
+import com.flameking.lottery.infrastructure.entity.Activity;
 import com.flameking.lottery.infrastructure.entity.UserStrategyExport;
 import com.flameking.lottery.infrastructure.entity.UserTakeActivity;
+import com.flameking.lottery.infrastructure.service.IActivityService;
 import com.flameking.lottery.infrastructure.service.IUserStrategyExportService;
 import com.flameking.lottery.infrastructure.service.IUserTakeActivityService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,6 +25,8 @@ public class UserTakeActivityRepository implements IUserTakeActivityRepository {
     private IUserTakeActivityService userTakeActivityService;
     @Autowired
     private IUserStrategyExportService userStrategyExportService;
+    @Autowired
+    private IActivityService activityService;
 
     @Override
     public boolean takeActivity(PartakeReq partake, ActivityBillVO bill, Long takeId) {
@@ -82,6 +84,14 @@ public class UserTakeActivityRepository implements IUserTakeActivityRepository {
         EntityUtils.copyProperties(noConsumedTakeActivityOrder, userTakeActivityVO);
 
         return userTakeActivityVO;
+    }
+
+    @Override
+    public boolean updateActivityStock(ActivityPartakeRecordVO activityPartakeRecordVO) {
+        Activity activity = new Activity();
+        activity.setActivityId(activityPartakeRecordVO.getActivityId());
+        activity.setStockSurplusCount(activityPartakeRecordVO.getStockSurplusCount());
+        return activityService.updateActivityStock(activity);
     }
 
     @Override
